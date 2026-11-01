@@ -6,7 +6,7 @@
       <p class="auth-form__subtitle">El mundo puede esperar. Tu carrito, no.</p>
     </header>
 
-    <q-form @submit="onSubmit" class="q-mt-lg q-gutter-y-md">
+    <q-form @submit="onSubmit" class="q-mt-lg">
       <q-input
         v-model="email"
         v-bind="emailProps"
@@ -15,6 +15,7 @@
         autocomplete="email"
         outlined
         dense
+        :class="errors.email ? 'q-mb-md' : 'q-mb-sm'"
       />
 
       <q-input
@@ -25,6 +26,7 @@
         autocomplete="current-password"
         outlined
         dense
+        :class="errors.email ? 'q-mb-md' : 'q-mb-sm'"
       >
         <template #append>
           <q-btn
@@ -39,7 +41,7 @@
       </q-input>
 
       <div class="row items-center">
-        <q-checkbox v-model="remember" label="Recordarme" color="primary" dense />
+        <q-checkbox v-model="remember" label="Recordarme" color="primary" class="q-mb-md" dense />
       </div>
 
       <q-btn
@@ -77,7 +79,7 @@ const initialValues = ref({
   remember: false,
 })
 
-const { defineField, handleSubmit } = useForm({
+const { defineField, handleSubmit, errors } = useForm({
   validationSchema: schema,
   initialValues: initialValues,
 })

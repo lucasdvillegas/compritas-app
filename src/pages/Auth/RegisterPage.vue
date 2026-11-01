@@ -6,7 +6,7 @@
       <p class="auth-form__subtitle">El mundo puede esperar. Tu carrito, no.</p>
     </header>
 
-    <q-form @submit="onSubmit" class="q-mt-lg q-gutter-y-md">
+    <q-form @submit="onSubmit" class="q-mt-lg">
       <q-input
         v-model="name"
         v-bind="nameProps"
@@ -14,6 +14,7 @@
         autocomplete="name"
         outlined
         dense
+        :class="errors.name ? 'q-mb-md' : 'q-mb-sm'"
       />
 
       <q-input
@@ -24,6 +25,7 @@
         autocomplete="email"
         outlined
         dense
+        :class="errors.email ? 'q-mb-md' : 'q-mb-sm'"
       />
 
       <q-input
@@ -34,6 +36,7 @@
         autocomplete="new-password"
         outlined
         dense
+        :class="errors.password ? 'q-mb-md' : 'q-mb-sm'"
       >
         <template #append>
           <q-btn
@@ -55,6 +58,7 @@
         autocomplete="new-password"
         outlined
         dense
+        :class="errors.confirmPassword ? 'q-mb-md' : 'q-mb-sm'"
       />
 
       <q-field v-bind="acceptTermsProps" borderless dense class="auth-form__terms">
@@ -64,6 +68,7 @@
             color="primary"
             label="Acepto los términos y condiciones y la política de privacidad"
             dense
+            :class="errors.acceptTerms ? 'q-mb-md' : 'q-mb-sm'"
           />
         </template>
       </q-field>
@@ -115,7 +120,7 @@ const initialValues = ref({
   acceptTerms: false,
 })
 
-const { defineField, handleSubmit } = useForm({
+const { defineField, handleSubmit, errors } = useForm({
   validationSchema: schema,
   initialValues: initialValues,
 })
