@@ -6,29 +6,10 @@
           <section class="auth-layout__form">
             <div class="auth-layout__form-inner">
               <div class="auth-layout__brand">
-                <img class="auth-layout__mark" :src="mark" alt="" aria-hidden="true" />
-                <span>Compritapp</span>
+                <img class="auth-layout__mark q-mx-auto" :src="mark" alt="" aria-hidden="true" />
               </div>
 
               <router-view />
-
-              <div class="auth-layout__credit">
-                Foto:
-                <a
-                  href="https://commons.wikimedia.org/wiki/File:UW_Band_drum_major_and_trumpets_(6186271423).jpg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >UW–Madison Archives</a
-                >
-                ·
-                <a
-                  href="https://creativecommons.org/licenses/by/2.0"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >CC BY 2.0</a
-                >
-                · editada
-              </div>
             </div>
           </section>
 
@@ -76,7 +57,7 @@ import poster from '../assets/drum-major.jpg'
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 32px;
+  padding: 28px 22px;
 }
 
 .auth-layout__form-inner {
@@ -85,10 +66,11 @@ import poster from '../assets/drum-major.jpg'
 }
 
 .auth-layout__brand {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 36px;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 46px;
   color: #171412;
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 15px;
@@ -98,9 +80,8 @@ import poster from '../assets/drum-major.jpg'
 }
 
 .auth-layout__mark {
-  display: block;
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
 }
 
 .auth-layout__credit {
