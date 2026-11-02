@@ -26,7 +26,7 @@
         autocomplete="current-password"
         outlined
         dense
-        :class="errors.email ? 'q-mb-md' : 'q-mb-sm'"
+        :class="errors.password ? 'q-mb-md' : 'q-mb-sm'"
       >
         <template #append>
           <q-btn
@@ -50,6 +50,7 @@
         class="full-width auth-form__submit"
         no-caps
         unelevated
+        :loading="authStore.loading"
       />
     </q-form>
 
@@ -62,11 +63,18 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import es from 'yup-es'
+import { useAuthStore } from '@/stores/auth-store'
 
 yup.setLocale(es)
+
+const router = useRouter()
+const $q = useQuasar()
+const authStore = useAuthStore()
 
 const schema = yup.object({
   email: yup.string().required().email().label('Correo electrónico'),
@@ -97,7 +105,28 @@ const [remember] = defineField('remember')
 
 const showPassword = ref(false)
 
-const onSubmit = handleSubmit(() => {
-  // TODO: conectar con el servicio de autenticación.
+const onSubmit = handleSubmit((values) => {
+  return authStore
+    .login({
+      email: values.email,
+      password: values.password,
+      remember: values.remember,
+    })
+    .then(() => {
+      $q.notify({
+        type: 'positive',
+        message: '¡Bienvenido de nuevo!',
+        position: 'top',
+      })
+
+      return router.push({ path: '/' })
+    })
+    .catch((error) => {
+      $q.notify({
+        type: 'negative',
+        message: error.response?.data?.message ?? 'No pudimos conectar con el servidor.',
+        position: 'top',
+      })
+    })
 })
 </script>

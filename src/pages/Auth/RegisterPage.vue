@@ -79,6 +79,7 @@
         class="full-width auth-form__submit"
         no-caps
         unelevated
+        :loading="authStore.loading"
       />
     </q-form>
 
@@ -91,11 +92,18 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import es from 'yup-es'
+import { useAuthStore } from '@/stores/auth-store'
 
 yup.setLocale(es)
+
+const router = useRouter()
+const $q = useQuasar()
+const authStore = useAuthStore()
 
 const schema = yup.object({
   name: yup.string().required().min(3).label('Nombre completo'),
@@ -140,7 +148,29 @@ const [acceptTerms, acceptTermsProps] = defineField('acceptTerms', fieldConfig)
 
 const showPassword = ref(false)
 
-const onSubmit = handleSubmit(() => {
-  // TODO: conectar con el servicio de registro.
+const onSubmit = handleSubmit((values) => {
+  return authStore
+    .register({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      passwordConfirmation: values.confirmPassword,
+    })
+    .then(() => {
+      $q.notify({
+        type: 'positive',
+        message: '¡Cuenta creada! Ya sos parte de la banda.',
+        position: 'top',
+      })
+
+      return router.push({ path: '/' })
+    })
+    .catch((error) => {
+      $q.notify({
+        type: 'negative',
+        message: error.response?.data?.message ?? 'No pudimos conectar con el servidor.',
+        position: 'top',
+      })
+    })
 })
 </script>
