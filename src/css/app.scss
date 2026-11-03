@@ -1,1 +1,17 @@
 // app global css
+
+// Únicos helpers propios: lo que Quasar no expone como utility.
+.page-shell {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.font-display {
+  font-family: Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.01em;
+}
+
+.tracked {
+  letter-spacing: 0.2em;
+}

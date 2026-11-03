@@ -92,16 +92,17 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import es from 'yup-es'
-import { useAuthStore } from '@/stores/auth-store'
+import { useAuthStore } from '@/stores/authStore'
 
 yup.setLocale(es)
 
 const router = useRouter()
+const route = useRoute()
 const $q = useQuasar()
 const authStore = useAuthStore()
 
@@ -148,6 +149,14 @@ const [acceptTerms, acceptTermsProps] = defineField('acceptTerms', fieldConfig)
 
 const showPassword = ref(false)
 
+function redirectTarget() {
+  const redirect = route.query.redirect
+
+  return typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')
+    ? redirect
+    : { path: '/' }
+}
+
 const onSubmit = handleSubmit((values) => {
   return authStore
     .register({
@@ -163,7 +172,7 @@ const onSubmit = handleSubmit((values) => {
         position: 'top',
       })
 
-      return router.push({ path: '/' })
+      return router.push(redirectTarget())
     })
     .catch((error) => {
       $q.notify({

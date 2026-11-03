@@ -16,8 +16,12 @@ $primary: #a52835;
 $secondary: #26a69a;
 $accent: #9c27b0;
 
-$dark: #1d1d1d;
+$dark: #171412;
 $dark-page: #121212;
+
+// Superficie y bordes del branding (así `bg-grey-1` y `bordered` usan estos tonos).
+$grey-1: #faf8f4;
+$separator-color: #e4dfd6;
 
 $positive: #21ba45;
 $negative: #c10015;

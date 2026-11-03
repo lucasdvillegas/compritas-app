@@ -2,9 +2,24 @@ const routes = [
   {
     path: '/',
     component: () => import('@/layouts/MainLayout.vue'),
+    meta: { requiresAuth: true },
     children: [
-      { path: '', component: () => import('@/pages/IndexPage.vue') },
-      { path: 'second', component: () => import('@/pages/SecondPage.vue') },
+      { path: '', name: 'mi-lista', component: () => import('@/pages/MiListaPage.vue') },
+      {
+        path: 'productos',
+        name: 'productos',
+        component: () => import('@/pages/ProductosPage.vue'),
+      },
+      {
+        path: 'categorias',
+        name: 'categorias',
+        component: () => import('@/pages/CategoriesPage.vue'),
+      },
+      {
+        path: 'historial',
+        name: 'historial',
+        component: () => import('@/pages/HistorialPage.vue'),
+      },
     ],
   },
 
@@ -17,7 +32,9 @@ const routes = [
   {
     path: '/register',
     component: () => import('@/layouts/AuthLayout.vue'),
-    children: [{ path: '', name: 'register', component: () => import('@/pages/Auth/RegisterPage.vue') }],
+    children: [
+      { path: '', name: 'register', component: () => import('@/pages/Auth/RegisterPage.vue') },
+    ],
   },
 
   // Always leave this as last one,

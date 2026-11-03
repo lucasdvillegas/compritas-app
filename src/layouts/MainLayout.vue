@@ -1,24 +1,84 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+    <q-header class="bg-grey-1 text-dark">
+      <q-toolbar class="q-py-sm">
+        <q-btn flat dense round icon="menu" aria-label="Abrir menú" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title class="row items-center no-wrap q-gutter-x-sm">
 
-        <div>Quasar v{{ $q.version }}</div>
+        </q-toolbar-title>
+
+        <div v-if="authStore.isAuthenticated" class="row items-center q-gutter-x-md">
+          <span class="text-body2 text-grey-7 gt-xs">
+            {{ authStore.user?.name ?? 'Tu cuenta' }}
+          </span>
+          <q-btn
+            flat
+            dense
+            no-caps
+            label="Salir"
+            class="text-primary text-weight-bold text-uppercase"
+            @click="onLogout"
+          />
+        </div>
+
+        <q-btn
+          v-else
+          flat
+          dense
+          no-caps
+          label="Ingresar"
+          class="text-primary text-weight-bold text-uppercase"
+          :to="{ name: 'login' }"
+        />
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="286" class="bg-grey-1">
+      <div class="column justify-between fit q-pa-md">
+        <div>
+          <div class="row items-center no-wrap q-gutter-x-sm q-px-sm q-pt-sm q-pb-lg">
+            <q-avatar size="28px">
+              <img :src="mark" alt="" aria-hidden="true" />
+            </q-avatar>
+            <div>
+              <div class="text-overline text-uppercase text-grey-6">We'll carry on</div>
+            </div>
+          </div>
 
-        <EssentialLink v-for="link in linksList" :key="link.label" v-bind="link" />
-      </q-list>
+          <q-list class="q-gutter-y-xs">
+            <q-item
+              v-for="link in links"
+              :key="link.name"
+              :to="{ name: link.name }"
+              clickable
+              exact
+              class="rounded-borders"
+              active-class="bg-grey-2 text-primary"
+            >
+              <q-item-section avatar>
+                <q-icon :name="link.icon" size="20px" />
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label class="text-weight-medium">{{ link.label }}</q-item-label>
+                <q-item-label caption>{{ link.caption }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+
+        <div class="q-pt-md">
+          <q-separator />
+          <div class="q-px-sm q-pt-md">
+            <div class="font-display text-overline text-uppercase text-dark">The Black Parade</div>
+            <div class="text-overline text-uppercase text-grey-6">MCR · 2006</div>
+          </div>
+        </div>
+      </div>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="bg-grey-1">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -26,56 +86,48 @@
 
 <script setup>
 import { ref } from 'vue'
-import EssentialLink from '@/components/EssentialLink.vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
+import mark from '@/assets/black-parade-mark.svg'
 
-const linksList = [
+const router = useRouter()
+const authStore = useAuthStore()
+const leftDrawerOpen = ref(false)
+
+const links = [
   {
-    label: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
+    name: 'mi-lista',
+    label: 'Mi lista',
+    caption: 'Tu última lista de compras',
+    icon: 'playlist_add_check',
   },
   {
-    label: 'GitHub',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
+    name: 'productos',
+    label: 'Productos',
+    caption: 'Catálogo de productos',
+    icon: 'inventory_2',
   },
   {
-    label: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
+    name: 'categorias',
+    label: 'Categorías',
+    caption: 'Organizá tu catálogo',
+    icon: 'category',
   },
   {
-    label: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    label: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    label: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    label: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
+    name: 'historial',
+    label: 'Historial',
+    caption: 'Listas anteriores',
+    icon: 'history',
   },
 ]
 
-const leftDrawerOpen = ref(false)
-
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+function onLogout() {
+  authStore.logout().finally(() => {
+    router.push({ name: 'login' })
+  })
 }
 </script>
