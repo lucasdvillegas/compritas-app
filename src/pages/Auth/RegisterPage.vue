@@ -165,21 +165,23 @@ const onSubmit = handleSubmit((values) => {
       password: values.password,
       passwordConfirmation: values.confirmPassword,
     })
-    .then(() => {
+    .then(({ message }) => {
       $q.notify({
         type: 'positive',
-        message: '¡Cuenta creada! Ya sos parte de la banda.',
+        message,
         position: 'top',
       })
 
       return router.push(redirectTarget())
     })
     .catch((error) => {
-      $q.notify({
-        type: 'negative',
-        message: error.response?.data?.message ?? 'No pudimos conectar con el servidor.',
-        position: 'top',
-      })
+      if (error.response?.data?.message) {
+        $q.notify({
+          type: 'negative',
+          message: error.response.data.message,
+          position: 'top',
+        })
+      }
     })
 })
 </script>

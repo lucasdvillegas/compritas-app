@@ -20,7 +20,7 @@
           label="Nueva categoría"
           unelevated
           no-caps
-          @click="openCreateDialog"
+          @click="openCategoryDialog()"
         />
       </div>
 
@@ -53,7 +53,7 @@
               icon="edit"
               color="primary"
               :aria-label="`Editar ${props.row.name}`"
-              @click="openEditDialog(props.row)"
+              @click="openCategoryDialog(props.row)"
             />
 
             <q-btn
@@ -69,54 +69,14 @@
         </template>
       </q-table>
     </div>
-
-    <q-dialog v-model="dialogOpen" persistent>
-      <q-card class="q-pa-xs" style="width: 420px; max-width: 90vw">
-        <q-card-section class="row items-center justify-between">
-          <div class="font-display text-h6 text-weight-bold text-dark">
-            {{ isEditing ? 'Editar categoría' : 'Nueva categoría' }}
-          </div>
-
-          <q-btn flat dense round icon="close" aria-label="Cerrar" v-close-popup />
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <q-form @submit.prevent="submitForm">
-            <q-input
-              v-model="form.name"
-              label="Nombre"
-              outlined
-              dense
-              autofocus
-              :rules="nameRules"
-              :error="Boolean(serverError)"
-              :error-message="serverError"
-              @update:model-value="serverError = ''"
-            />
-
-            <div class="row justify-end q-gutter-sm q-mt-lg">
-              <q-btn flat label="Cancelar" no-caps v-close-popup />
-
-              <q-btn
-                type="submit"
-                color="primary"
-                :label="isEditing ? 'Guardar' : 'Crear'"
-                unelevated
-                no-caps
-                :loading="saving"
-              />
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from '@/boot/axios'
+import CategoryDialog from '@/components/Categories/CategoryDialog.vue'
 
 const $q = useQuasar()
 
@@ -125,30 +85,10 @@ const columns = [
   { name: 'actions', label: 'Acciones', field: 'actions', align: 'right' },
 ]
 
-const nameRules = [
-  (value) => Boolean(value?.trim()) || 'El nombre es obligatorio.',
-  (value) => (value?.trim().length ?? 0) <= 255 || 'El nombre no puede superar los 255 caracteres.',
-]
-
-const dialogOpen = ref(false)
-const editingId = ref(null)
-const form = ref({ name: '' })
-const serverError = ref('')
 const categories = ref([])
 const loading = ref(false)
-const saving = ref(false)
 
-const isEditing = computed(() => editingId.value !== null)
-
-function errorMessage(error, fallback) {
-  if (error.response?.status === 401) {
-    return 'Iniciá sesión para administrar tus categorías.'
-  }
-
-  return error.response?.data?.errors?.name?.[0] ?? error.response?.data?.message ?? fallback
-}
-
-function loadCategories() {
+function fetchCategory() {
   loading.value = true
 
   api
@@ -157,59 +97,24 @@ function loadCategories() {
       categories.value = data.data
     })
     .catch((error) => {
-      $q.notify({
-        type: 'negative',
-        message: errorMessage(error, 'No pudimos cargar las categorías.'),
-        position: 'top',
-      })
+      if (error.response?.data?.message) {
+        $q.notify({
+          type: 'negative',
+          message: error.response.data.message,
+          position: 'top',
+        })
+      }
     })
     .finally(() => {
       loading.value = false
     })
 }
 
-function openCreateDialog() {
-  editingId.value = null
-  form.value = { name: '' }
-  serverError.value = ''
-  dialogOpen.value = true
-}
-
-function openEditDialog(category) {
-  editingId.value = category.id
-  form.value = { name: category.name }
-  serverError.value = ''
-  dialogOpen.value = true
-}
-
-function submitForm() {
-  const wasEditing = isEditing.value
-  const payload = { name: form.value.name.trim() }
-
-  saving.value = true
-
-  const request = wasEditing
-    ? api.put(`/categories/${editingId.value}`, payload)
-    : api.post('/categories', payload)
-
-  request
-    .then(() => api.get('/categories'))
-    .then(({ data }) => {
-      categories.value = data.data
-      dialogOpen.value = false
-
-      $q.notify({
-        type: 'positive',
-        message: wasEditing ? 'Categoría actualizada.' : 'Categoría creada.',
-        position: 'top',
-      })
-    })
-    .catch((error) => {
-      serverError.value = errorMessage(error, 'No pudimos guardar la categoría.')
-    })
-    .finally(() => {
-      saving.value = false
-    })
+function openCategoryDialog(category = null) {
+  $q.dialog({
+    component: CategoryDialog,
+    componentProps: { category },
+  }).onOk(() => fetchCategory())
 }
 
 function confirmDelete(category) {
@@ -217,29 +122,36 @@ function confirmDelete(category) {
     title: 'Eliminar categoría',
     message: `¿Querés eliminar "${category.name}"? Esta acción no se puede deshacer.`,
     cancel: { label: 'Cancelar', flat: true, noCaps: true },
-    ok: { label: 'Eliminar', color: 'negative', unelevated: true, noCaps: true },
+    ok: {
+      label: 'Eliminar',
+      color: 'negative',
+      unelevated: true,
+      noCaps: true,
+    },
     persistent: true,
   }).onOk(() => {
     api
       .delete(`/categories/${category.id}`)
-      .then(() => {
+      .then(({ data }) => {
         categories.value = categories.value.filter((item) => item.id !== category.id)
 
         $q.notify({
           type: 'positive',
-          message: 'Categoría eliminada.',
+          message: data.message,
           position: 'top',
         })
       })
       .catch((error) => {
-        $q.notify({
-          type: 'negative',
-          message: errorMessage(error, 'No pudimos eliminar la categoría.'),
-          position: 'top',
-        })
+        if (error.response?.data?.message) {
+          $q.notify({
+            type: 'negative',
+            message: error.response.data.message,
+            position: 'top',
+          })
+        }
       })
   })
 }
 
-onMounted(loadCategories)
+onMounted(fetchCategory)
 </script>

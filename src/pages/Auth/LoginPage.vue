@@ -121,21 +121,23 @@ const onSubmit = handleSubmit((values) => {
       password: values.password,
       remember: values.remember,
     })
-    .then(() => {
+    .then(({ message }) => {
       $q.notify({
         type: 'positive',
-        message: '¡Bienvenido de nuevo!',
+        message,
         position: 'top',
       })
 
       return router.push(redirectTarget())
     })
     .catch((error) => {
-      $q.notify({
-        type: 'negative',
-        message: error.response?.data?.message ?? 'No pudimos conectar con el servidor.',
-        position: 'top',
-      })
+      if (error.response?.data?.message) {
+        $q.notify({
+          type: 'negative',
+          message: error.response.data.message,
+          position: 'top',
+        })
+      }
     })
 })
 </script>
