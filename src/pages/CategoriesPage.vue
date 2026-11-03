@@ -38,12 +38,6 @@
         no-data-label="Todavía no hay categorías"
         loading-label="Cargando categorías..."
       >
-        <template #body-cell-name="props">
-          <q-td :props="props">
-            <span class="text-body2 text-weight-medium text-dark">{{ props.row.name }}</span>
-          </q-td>
-        </template>
-
         <template #body-cell-actions="props">
           <q-td :props="props" class="text-right">
             <q-btn
