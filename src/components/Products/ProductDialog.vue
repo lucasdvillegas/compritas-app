@@ -41,6 +41,24 @@
             @update:model-value="serverError.category_id = ''"
           />
 
+          <div class="text-caption text-grey-7 q-mt-md q-mb-xs">Se vende</div>
+
+          <q-btn-toggle
+            v-model="form.unit"
+            spread
+            no-caps
+            unelevated
+            color="grey-2"
+            text-color="grey-8"
+            toggle-color="primary"
+            :options="unitOptions"
+            @update:model-value="serverError.unit = ''"
+          />
+
+          <div v-if="serverError.unit" class="text-caption text-negative q-mt-xs">
+            {{ serverError.unit }}
+          </div>
+
           <div class="row justify-end q-gutter-sm q-mt-lg">
             <q-btn flat label="Cancelar" no-caps @click="onDialogCancel" />
 
@@ -62,7 +80,8 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useDialogPluginComponent, useQuasar } from 'quasar'
-import { api } from '@/boot/axios'
+import { productsServices } from '@/services/productsServices'
+import { categoriesServices } from '@/services/categoriesServices'
 
 const props = defineProps({
   product: {
@@ -80,13 +99,19 @@ const $q = useQuasar()
 const form = ref({
   name: props.product?.name ?? '',
   category_id: props.product?.category_id ?? null,
+  unit: props.product?.unit ?? 'unit',
 })
-const serverError = ref({ name: '', category_id: '' })
+const serverError = ref({ name: '', category_id: '', unit: '' })
 const categories = ref([])
 const loadingCategories = ref(false)
 const saving = ref(false)
 
 const isEditing = computed(() => Boolean(props.product?.id))
+
+const unitOptions = [
+  { label: 'Por unidad', value: 'unit' },
+  { label: 'Por peso (kg)', value: 'kg' },
+]
 
 const nameRules = [
   (value) => Boolean(value?.trim()) || 'El nombre es obligatorio.',
@@ -97,8 +122,8 @@ const categoryRules = [(value) => Boolean(value) || 'La categoría es obligatori
 
 loadingCategories.value = true
 
-api
-  .get('/categories')
+categoriesServices
+  .getCategories()
   .then(({ data }) => {
     categories.value = data.data
   })
@@ -120,13 +145,14 @@ function submitForm() {
   const payload = {
     name: form.value.name.trim(),
     category_id: form.value.category_id,
+    unit: form.value.unit,
   }
 
   saving.value = true
 
   const request = wasEditing
-    ? api.put(`/products/${props.product.id}`, payload)
-    : api.post('/products', payload)
+    ? productsServices.updateProduct(props.product.id, payload)
+    : productsServices.createProduct(payload)
 
   request
     .then(({ data }) => {
@@ -144,11 +170,13 @@ function submitForm() {
       serverError.value = {
         name: errors.name?.[0] ?? '',
         category_id: errors.category_id?.[0] ?? '',
+        unit: errors.unit?.[0] ?? '',
       }
 
       if (
         !serverError.value.name &&
         !serverError.value.category_id &&
+        !serverError.value.unit &&
         error.response?.data?.message
       ) {
         $q.notify({

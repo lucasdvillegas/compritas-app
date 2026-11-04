@@ -4,9 +4,7 @@
       <q-toolbar class="q-py-sm">
         <q-btn flat dense round icon="menu" aria-label="Abrir menú" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="row items-center no-wrap q-gutter-x-sm">
-
-        </q-toolbar-title>
+        <q-toolbar-title class="row items-center no-wrap q-gutter-x-sm"> </q-toolbar-title>
 
         <div v-if="authStore.isAuthenticated" class="row items-center q-gutter-x-md">
           <span class="text-body2 text-grey-7 gt-xs">
@@ -88,33 +86,35 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
+import { useListsStore } from '@/stores/listsStore'
 import mark from '@/assets/black-parade-mark.svg'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const listsStore = useListsStore()
 const leftDrawerOpen = ref(false)
 
 const links = [
   {
-    name: 'mi-lista',
+    name: 'my-list',
     label: 'Mi lista',
-    caption: 'Tu última lista de compras',
+    caption: 'Tus listas de compras abiertas',
     icon: 'playlist_add_check',
   },
   {
-    name: 'productos',
+    name: 'products',
     label: 'Productos',
     caption: 'Catálogo de productos',
     icon: 'inventory_2',
   },
   {
-    name: 'categorias',
+    name: 'categories',
     label: 'Categorías',
     caption: 'Organizá tu catálogo',
     icon: 'category',
   },
   {
-    name: 'historial',
+    name: 'history',
     label: 'Historial',
     caption: 'Listas anteriores',
     icon: 'history',
@@ -127,6 +127,7 @@ function toggleLeftDrawer() {
 
 function onLogout() {
   authStore.logout().finally(() => {
+    listsStore.$reset()
     router.push({ name: 'login' })
   })
 }

@@ -69,7 +69,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { api } from '@/boot/axios'
+import { categoriesServices } from '@/services/categoriesServices'
 import CategoryDialog from '@/components/Categories/CategoryDialog.vue'
 
 const $q = useQuasar()
@@ -85,8 +85,8 @@ const loading = ref(false)
 function fetchCategory() {
   loading.value = true
 
-  api
-    .get('/categories')
+  categoriesServices
+    .getCategories()
     .then(({ data }) => {
       categories.value = data.data
     })
@@ -124,8 +124,8 @@ function confirmDelete(category) {
     },
     persistent: true,
   }).onOk(() => {
-    api
-      .delete(`/categories/${category.id}`)
+    categoriesServices
+      .deleteCategory(category.id)
       .then(({ data }) => {
         categories.value = categories.value.filter((item) => item.id !== category.id)
 

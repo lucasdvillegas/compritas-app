@@ -44,7 +44,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useDialogPluginComponent, useQuasar } from 'quasar'
-import { api } from '@/boot/axios'
+import { categoriesServices } from '@/services/categoriesServices'
 
 const props = defineProps({
   category: {
@@ -77,8 +77,8 @@ function submitForm() {
   saving.value = true
 
   const request = wasEditing
-    ? api.put(`/categories/${props.category.id}`, payload)
-    : api.post('/categories', payload)
+    ? categoriesServices.updateCategory(props.category.id, payload)
+    : categoriesServices.createCategory(payload)
 
   request
     .then(({ data }) => {

@@ -69,7 +69,8 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
-import { api } from '@/boot/axios'
+import { productsServices } from '@/services/productsServices'
+import { unitSaleLabel } from '@/utils/units'
 import ProductDialog from '@/components/Products/ProductDialog.vue'
 
 const $q = useQuasar()
@@ -83,6 +84,13 @@ const columns = [
     align: 'left',
     sortable: true,
   },
+  {
+    name: 'unit',
+    label: 'Se vende',
+    field: (row) => unitSaleLabel(row.unit),
+    align: 'left',
+    sortable: true,
+  },
   { name: 'actions', label: 'Acciones', field: 'actions', align: 'right' },
 ]
 
@@ -92,8 +100,8 @@ const loading = ref(false)
 function fetchProducts() {
   loading.value = true
 
-  api
-    .get('/products')
+  productsServices
+    .getProducts()
     .then(({ data }) => {
       products.value = data.data
     })
@@ -131,8 +139,8 @@ function confirmDelete(product) {
     },
     persistent: true,
   }).onOk(() => {
-    api
-      .delete(`/products/${product.id}`)
+    productsServices
+      .deleteProduct(product.id)
       .then(({ data }) => {
         products.value = products.value.filter((item) => item.id !== product.id)
 
