@@ -1,8 +1,8 @@
 import { api } from '@/boot/axios'
 
 export const categoriesServices = {
-  getCategories() {
-    return api.get('/categories')
+  getCategories(params = {}) {
+    return api.get('/categories', { params })
   },
 
   createCategory(payload) {

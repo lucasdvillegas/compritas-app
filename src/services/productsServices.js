@@ -1,8 +1,8 @@
 import { api } from '@/boot/axios'
 
 export const productsServices = {
-  getProducts() {
-    return api.get('/products')
+  getProducts(params = {}) {
+    return api.get('/products', { params })
   },
 
   createProduct(payload) {

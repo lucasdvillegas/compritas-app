@@ -23,8 +23,10 @@
           dense
           outlined
           clearable
+          debounce="400"
           placeholder="Buscar producto..."
           aria-label="Buscar producto"
+          @update:model-value="onSearch"
         >
           <template #prepend>
             <q-icon name="search" />
@@ -33,7 +35,8 @@
 
         <div class="row items-center justify-between q-mt-sm">
           <div class="text-caption app-text-muted">
-            {{ inListCount }} en la lista · {{ products.length }} productos
+            {{ inListCount }} en la lista · {{ totalProducts }}
+            {{ totalProducts === 1 ? 'producto' : 'productos' }}
           </div>
 
           <q-btn
@@ -50,28 +53,27 @@
 
       <q-separator />
 
-      <q-card-section class="col q-pa-none" style="overflow-y: auto">
-        <div v-if="loading" class="column items-center q-pa-xl app-text-muted">
+      <q-card-section ref="listContainer" class="col q-pa-none" style="overflow-y: auto">
+        <div v-if="loading && products.length === 0" class="row justify-center q-pa-xl">
           <q-spinner color="primary" size="32px" />
-          <div class="text-body2 q-mt-sm">Cargando productos...</div>
         </div>
 
         <AppEmptyState
-          v-else-if="filteredProducts.length === 0"
+          v-else-if="products.length === 0"
           variant="plain"
-          :icon="products.length === 0 ? 'inventory_2' : 'search_off'"
+          :icon="search ? 'search_off' : 'inventory_2'"
           icon-size="40px"
-          :title="products.length === 0 ? 'Tu catálogo está vacío' : 'No encontramos productos'"
+          :title="search ? 'No encontramos productos' : 'Tu catálogo está vacío'"
           :description="
-            products.length === 0
-              ? 'Creá tu primer producto para sumarlo a la lista.'
-              : 'Probá con otro nombre.'
+            search
+              ? 'Probá con otro nombre.'
+              : 'Creá tu primer producto para sumarlo a la lista.'
           "
         />
 
         <q-list v-else separator>
           <q-slide-item
-            v-for="product in filteredProducts"
+            v-for="product in products"
             :key="product.id"
             left-color="positive"
             :right-color="$q.dark.isActive ? 'grey-9' : 'grey-7'"
@@ -109,12 +111,19 @@
                   {{ product.name }}
                 </q-item-label>
                 <q-item-label caption>
-                  {{ product.category?.name || 'Sin categoría' }} · {{ unitSaleLabel(product.unit) }}
+                  {{ product.category?.name || 'Sin categoría' }} ·
+                  {{ unitSaleLabel(product.unit) }}
                 </q-item-label>
               </q-item-section>
             </q-item>
           </q-slide-item>
         </q-list>
+
+        <div v-if="loadingMore" class="row justify-center q-my-md">
+          <q-spinner color="primary" size="28px" />
+        </div>
+
+        <div ref="loadMoreSentinel" style="height: 1px" aria-hidden="true" />
       </q-card-section>
 
       <q-separator />
@@ -138,7 +147,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useDialogPluginComponent, useQuasar } from 'quasar'
 import { productsServices } from '@/services/productsServices'
 import { unitSaleLabel } from '@/utils/units'
@@ -161,9 +170,16 @@ const $q = useQuasar()
 const listsStore = useListsStore()
 
 const products = ref([])
-const loading = ref(false)
+const loading = ref(true)
+const loadingMore = ref(false)
+const hasMore = ref(true)
+const page = ref(1)
 const search = ref('')
+const totalProducts = ref(0)
 const savingProductId = ref(null)
+const listContainer = ref(null)
+const loadMoreSentinel = ref(null)
+let observer = null
 
 const itemsByProductId = computed(() => {
   const map = new Map()
@@ -179,19 +195,81 @@ const itemsByProductId = computed(() => {
 
 const inListCount = computed(() => itemsByProductId.value.size)
 
-const filteredProducts = computed(() => {
-  const term = search.value.trim().toLowerCase()
-
-  if (!term) {
-    return products.value
+function loadNextPage() {
+  if (!hasMore.value || loading.value || loadingMore.value) {
+    return
   }
 
-  return products.value.filter((product) => {
-    const category = product.category?.name ?? ''
+  loadPage(page.value + 1)
+}
 
-    return product.name.toLowerCase().includes(term) || category.toLowerCase().includes(term)
-  })
-})
+function maybeLoadMore() {
+  const sentinel = loadMoreSentinel.value
+  const root = listContainer.value
+
+  if (!sentinel || !root || !hasMore.value || loading.value || loadingMore.value) {
+    return
+  }
+
+  const rect = sentinel.getBoundingClientRect()
+  const rootRect = root.getBoundingClientRect()
+
+  if (rect.top <= rootRect.bottom) {
+    loadNextPage()
+  }
+}
+
+function loadPage(pageNumber) {
+  if (pageNumber === 1) {
+    loading.value = true
+  } else {
+    loadingMore.value = true
+  }
+
+  productsServices
+    .getProducts({
+      page: pageNumber,
+      per_page: 10,
+      search: search.value || undefined,
+    })
+    .then(({ data }) => {
+      products.value = pageNumber === 1 ? data.data : [...products.value, ...data.data]
+      hasMore.value = Boolean(data.meta?.has_more)
+      totalProducts.value = data.meta?.total ?? products.value.length
+      page.value = pageNumber
+    })
+    .catch((error) => {
+      hasMore.value = false
+      notifyError(error)
+    })
+    .finally(() => {
+      loading.value = false
+      loadingMore.value = false
+      nextTick(() => maybeLoadMore())
+    })
+}
+
+function onSearch() {
+  resetList()
+}
+
+function resetList() {
+  products.value = []
+  page.value = 1
+  hasMore.value = true
+  loading.value = true
+  loadPage(1)
+}
+
+function notifyError(error) {
+  if (error.response?.data?.message) {
+    $q.notify({
+      type: 'negative',
+      message: error.response.data.message,
+      position: 'top',
+    })
+  }
+}
 
 function itemFor(product) {
   return itemsByProductId.value.get(product.id)
@@ -256,37 +334,37 @@ function openNewProduct() {
   $q.dialog({
     component: ProductDialog,
   }).onOk((product) => {
-    products.value = [...products.value, product].sort((first, second) =>
-      first.name.localeCompare(second.name, 'es'),
-    )
+    products.value = [product, ...products.value]
+    totalProducts.value += 1
   })
 }
 
 onMounted(() => {
-  loading.value = true
-
-  const requests = [productsServices.getProducts()]
+  loadPage(1)
 
   if (listsStore.activeList?.id !== props.list.id) {
-    requests.push(listsStore.selectList(props.list.id))
+    listsStore.selectList(props.list.id).catch(notifyError)
   }
 
-  Promise.all(requests)
-    .then(([productsResponse]) => {
-      products.value = productsResponse.data.data
-    })
-    .catch((error) => {
-      if (error.response?.data?.message) {
-        $q.notify({
-          type: 'negative',
-          message: error.response.data.message,
-          position: 'top',
-        })
+  observer = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        loadNextPage()
       }
-    })
-    .finally(() => {
-      loading.value = false
-    })
+    },
+    {
+      root: listContainer.value,
+      rootMargin: '0px',
+    },
+  )
+
+  if (loadMoreSentinel.value) {
+    observer.observe(loadMoreSentinel.value)
+  }
+})
+
+onBeforeUnmount(() => {
+  observer?.disconnect()
 })
 </script>
 

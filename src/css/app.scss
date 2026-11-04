@@ -161,6 +161,11 @@ body.body--dark .q-card.app-primary-card {
   border-radius: var(--app-radius-sm) !important;
 }
 
+.app-slide-card {
+  border-radius: var(--app-radius);
+  overflow: hidden;
+}
+
 .app-progress .q-linear-progress__track {
   background: var(--app-track) !important;
   opacity: 1 !important;

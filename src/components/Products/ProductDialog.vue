@@ -123,7 +123,7 @@ const categoryRules = [(value) => Boolean(value) || 'La categoría es obligatori
 loadingCategories.value = true
 
 categoriesServices
-  .getCategories()
+  .getCategories({ per_page: 50 })
   .then(({ data }) => {
     categories.value = data.data
   })
