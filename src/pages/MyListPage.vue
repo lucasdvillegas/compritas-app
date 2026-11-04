@@ -3,7 +3,6 @@
     <div class="page-shell">
       <div class="row items-center justify-between q-gutter-y-md">
         <div>
-          <div class="text-overline text-uppercase text-primary">Mi lista</div>
           <h1 class="font-display text-h4 text-weight-bold text-dark q-mt-xs q-mb-none">
             Tu compra, sin vueltas
           </h1>

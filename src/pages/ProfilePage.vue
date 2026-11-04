@@ -1,7 +1,6 @@
 <template>
   <q-page class="bg-grey-1 q-pa-lg">
     <div class="page-shell">
-      <div class="text-overline text-uppercase text-primary">Perfil</div>
       <h1 class="font-display text-h4 text-weight-bold text-dark q-mt-xs q-mb-none">
         Tu cuenta
       </h1>

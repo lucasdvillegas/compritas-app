@@ -3,7 +3,6 @@
     <div class="page-shell">
       <div class="row items-center justify-between q-gutter-y-md">
         <div>
-          <div class="text-overline text-uppercase text-primary">Estadísticas</div>
           <h1 class="font-display text-h4 text-weight-bold text-dark q-mt-xs q-mb-none">
             Tus gastos, en perspectiva
           </h1>

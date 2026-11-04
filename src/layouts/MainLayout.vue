@@ -6,7 +6,7 @@
 
         <q-toolbar-title class="row items-center no-wrap q-gutter-x-sm"> </q-toolbar-title>
 
-        <div v-if="authStore.isAuthenticated" class="row items-center q-gutter-x-md">
+        <div class="row items-center q-gutter-x-md">
           <q-btn
             flat
             dense
@@ -23,25 +23,7 @@
           <span class="text-body2 text-grey-7 gt-xs">
             {{ authStore.user?.name ?? 'Tu cuenta' }}
           </span>
-          <q-btn
-            flat
-            dense
-            no-caps
-            label="Salir"
-            class="text-primary text-weight-bold text-uppercase"
-            @click="onLogout"
-          />
         </div>
-
-        <q-btn
-          v-else
-          flat
-          dense
-          no-caps
-          label="Ingresar"
-          class="text-primary text-weight-bold text-uppercase"
-          :to="{ name: 'login' }"
-        />
       </q-toolbar>
     </q-header>
 
@@ -81,10 +63,18 @@
 
         <div class="q-pt-md">
           <q-separator />
-          <div class="q-px-sm q-pt-md">
-            <div class="font-display text-overline text-uppercase text-dark">The Black Parade</div>
-            <div class="text-overline text-uppercase text-grey-6">MCR · 2006</div>
-          </div>
+          <q-list class="q-mt-sm">
+            <q-item clickable class="rounded-borders" @click="onLogout">
+              <q-item-section avatar>
+                <q-icon name="logout" size="20px" />
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label class="text-weight-medium">Salir</q-item-label>
+                <q-item-label caption>Cerrar sesión</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
       </div>
     </q-drawer>
