@@ -2,10 +2,10 @@
   <q-page class="app-page q-pa-lg">
     <div class="page-shell">
       <h1 class="font-display text-h4 text-weight-bold app-text q-mt-xs q-mb-none">
-        Tu cuenta
+        Configuración
       </h1>
       <p class="text-body2 app-text-muted q-mt-sm q-mb-none">
-        Gestioná tus datos y compartí tu PIN para que te agreguen a una lista.
+        Gestioná tus datos, tu PIN y las preferencias de la app.
       </p>
 
       <div v-if="loading && !user" class="column items-center q-pa-xl app-text-muted">
@@ -92,13 +92,42 @@
             <q-toggle v-model="isDark" color="white" aria-label="Modo oscuro" />
           </q-card-section>
         </q-card>
+
+        <q-card class="q-mt-lg app-primary-card">
+          <q-card-section>
+            <div class="row items-center q-gutter-x-sm">
+              <q-avatar class="app-primary-avatar" icon="text_fields" />
+              <div class="text-overline text-uppercase app-text-muted">Tipografía</div>
+            </div>
+
+            <div class="text-body2 app-text-muted q-mt-sm">
+              Elegí una combinación pensada para que leer sea más cómodo.
+            </div>
+
+            <div class="row q-gutter-sm q-mt-md">
+              <q-btn
+                v-for="option in typographyOptions"
+                :key="option.value"
+                :label="option.label"
+                no-caps
+                color="white"
+                :text-color="typography === option.value ? 'primary' : 'white'"
+                :unelevated="typography === option.value"
+                :outline="typography !== option.value"
+                @click="setTypography(option.value)"
+              />
+            </div>
+
+            <div class="text-caption app-text-muted q-mt-sm">{{ typographyHint }}</div>
+          </q-card-section>
+        </q-card>
       </template>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { copyToClipboard, useQuasar } from 'quasar'
 import { useProfileStore } from '@/stores/profileStore'
@@ -109,6 +138,29 @@ const { user, pin, loading } = storeToRefs(profileStore)
 
 const formattedPin = computed(() => (pin.value ? `${pin.value.slice(0, 4)} ${pin.value.slice(4)}` : ''))
 
+const typographyOptions = [
+  { label: 'Por defecto', value: 'default' },
+  { label: 'Lectura fácil', value: 'dyslexic' },
+]
+
+const typography = ref(readTypography())
+
+const typographyHint = computed(() =>
+  typography.value === 'dyslexic'
+    ? 'Lexend · Atkinson Hyperlegible · Andika'
+    : 'Fraunces · DM Sans · JetBrains Mono',
+)
+
+function readTypography() {
+  return localStorage.getItem('typography') === 'dyslexic' ? 'dyslexic' : 'default'
+}
+
+function setTypography(value) {
+  typography.value = value
+  localStorage.setItem('typography', value)
+  document.body.classList.toggle('app-typography-dyslexic', value === 'dyslexic')
+}
+
 const isDark = computed({
   get: () => $q.dark.isActive,
   set: (value) => {
@@ -117,7 +169,10 @@ const isDark = computed({
   },
 })
 
-onMounted(fetchProfile)
+onMounted(() => {
+  setTypography(typography.value)
+  fetchProfile()
+})
 
 function notifyError(error) {
   if (error.response?.data?.message) {

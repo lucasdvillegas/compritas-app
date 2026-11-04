@@ -282,8 +282,8 @@ const links = [
   },
   {
     name: 'profile',
-    label: 'Perfil',
-    icon: 'person',
+    label: 'Configuración',
+    icon: 'settings',
   },
 ]
 
