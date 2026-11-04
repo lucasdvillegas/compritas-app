@@ -11,18 +11,31 @@
           </p>
         </div>
 
-        <q-select
-          v-model="selectedYear"
-          :options="yearOptions"
-          label="Año"
-          outlined
-          dense
-          emit-value
-          map-options
-          :disable="loading"
-          style="min-width: 140px"
-          @update:model-value="loadStats"
-        />
+        <div class="row items-center q-gutter-sm">
+          <q-select
+            v-model="selectedYear"
+            :options="yearOptions"
+            label="Año"
+            outlined
+            dense
+            emit-value
+            map-options
+            :disable="loading"
+            style="min-width: 110px"
+          />
+
+          <q-select
+            v-model="selectedMonth"
+            :options="monthOptions"
+            label="Mes"
+            outlined
+            dense
+            emit-value
+            map-options
+            :disable="loading"
+            style="min-width: 160px"
+          />
+        </div>
       </div>
 
       <q-linear-progress
@@ -42,7 +55,7 @@
         v-else-if="summary && summary.lists_count === 0"
         class="q-mt-xl"
         icon="insights"
-        :title="`Todavía no hay datos para ${selectedYear}`"
+        :title="`Todavía no hay datos para ${periodLabel}`"
         description="Completá una lista para ver tus gastos y estadísticas."
         action-label="Ir a mis listas"
         :action-to="{ name: 'my-list' }"
@@ -53,7 +66,7 @@
 
         <div class="row q-col-gutter-lg q-mt-md">
           <div class="col-12 col-md-7">
-            <MonthlyChart :months="months" :year="year" />
+            <MonthlyChart :months="months" :year="year" :selected-month="selectedMonth" />
           </div>
 
           <div class="col-12 col-md-5">
@@ -70,7 +83,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useQuasar } from 'quasar'
 import { useStatsStore } from '@/stores/statsStore'
@@ -86,6 +99,8 @@ const { summary, months, categories, products, year, loading } = storeToRefs(sta
 
 const currentYear = new Date().getFullYear()
 const selectedYear = ref(statsStore.year)
+const selectedMonth = ref(null)
+const monthFormatter = new Intl.DateTimeFormat('es-AR', { month: 'long' })
 
 const yearOptions = computed(() =>
   Array.from({ length: 5 }, (_, index) => {
@@ -95,19 +110,47 @@ const yearOptions = computed(() =>
   }),
 )
 
+const monthOptions = [
+  { label: 'Todo el año', value: null },
+  ...Array.from({ length: 12 }, (_, index) => {
+    const label = monthFormatter.format(new Date(2026, index, 1))
+
+    return {
+      label: label.charAt(0).toUpperCase() + label.slice(1),
+      value: index + 1,
+    }
+  }),
+]
+
+const periodLabel = computed(() => {
+  if (!selectedMonth.value) {
+    return String(selectedYear.value)
+  }
+
+  const label = monthFormatter.format(
+    new Date(selectedYear.value, selectedMonth.value - 1, 1),
+  )
+
+  return `${label.charAt(0).toUpperCase() + label.slice(1)} ${selectedYear.value}`
+})
+
+watch([selectedYear, selectedMonth], loadStats)
 onMounted(loadStats)
 
-function loadStats(value) {
-  const selected = typeof value === 'number' ? value : selectedYear.value
-
-  statsStore.fetchStats({ year: selected }).catch((error) => {
-    if (error.response?.data?.message) {
-      $q.notify({
-        type: 'negative',
-        message: error.response.data.message,
-        position: 'top',
-      })
-    }
-  })
+function loadStats() {
+  statsStore
+    .fetchStats({
+      year: selectedYear.value,
+      month: selectedMonth.value,
+    })
+    .catch((error) => {
+      if (error.response?.data?.message) {
+        $q.notify({
+          type: 'negative',
+          message: error.response.data.message,
+          position: 'top',
+        })
+      }
+    })
 }
 </script>

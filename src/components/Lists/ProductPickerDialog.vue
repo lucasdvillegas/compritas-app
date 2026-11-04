@@ -205,7 +205,7 @@ function loadNextPage() {
 
 function maybeLoadMore() {
   const sentinel = loadMoreSentinel.value
-  const root = listContainer.value
+  const root = listContainer.value?.$el ?? listContainer.value
 
   if (!sentinel || !root || !hasMore.value || loading.value || loadingMore.value) {
     return
@@ -353,7 +353,7 @@ onMounted(() => {
       }
     },
     {
-      root: listContainer.value,
+      root: listContainer.value?.$el ?? listContainer.value,
       rootMargin: '0px',
     },
   )

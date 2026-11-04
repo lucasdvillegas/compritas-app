@@ -41,6 +41,10 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  selectedMonth: {
+    type: Number,
+    default: null,
+  },
 })
 
 const monthFormatter = new Intl.DateTimeFormat('es-AR', { month: 'short' })
@@ -55,16 +59,26 @@ const chartColors = computed(() =>
   $q.dark.isActive
     ? {
         bar: 'rgba(165, 40, 53, 0.9)',
+        barMuted: 'rgba(255, 255, 255, 0.16)',
         barHover: 'rgba(165, 40, 53, 1)',
         text: '#e8eaed',
         grid: 'rgba(255, 255, 255, 0.08)',
       }
     : {
         bar: 'rgba(165, 40, 53, 0.75)',
+        barMuted: 'rgba(165, 40, 53, 0.25)',
         barHover: 'rgba(165, 40, 53, 0.95)',
         text: '#5f6368',
         grid: 'rgba(0, 0, 0, 0.06)',
       },
+)
+
+const barColors = computed(() =>
+  props.months.map((month, index) =>
+    props.selectedMonth === null || props.selectedMonth === index + 1
+      ? chartColors.value.bar
+      : chartColors.value.barMuted,
+  ),
 )
 
 const chartData = computed(() => ({
@@ -72,7 +86,7 @@ const chartData = computed(() => ({
   datasets: [
     {
       data: props.months.map((month) => month.total_spent),
-      backgroundColor: chartColors.value.bar,
+      backgroundColor: barColors.value,
       hoverBackgroundColor: chartColors.value.barHover,
       borderRadius: 4,
       maxBarThickness: 36,

@@ -11,7 +11,18 @@ function todayString() {
   return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
 }
 
-function rangeForYear(year) {
+function lastDayOfMonth(year, month) {
+  return new Date(year, month, 0).getDate()
+}
+
+function rangeFor(year, month = null) {
+  if (month !== null && month !== undefined) {
+    return {
+      from: `${year}-${pad(month)}-01`,
+      to: `${year}-${pad(month)}-${pad(lastDayOfMonth(year, month))}`,
+    }
+  }
+
   const currentYear = new Date().getFullYear()
 
   return {
@@ -36,11 +47,11 @@ export const useStatsStore = defineStore('stats', {
   },
 
   actions: {
-    fetchStats({ year = null } = {}) {
+    fetchStats({ year = null, month = null } = {}) {
       this.loading = true
 
       const selectedYear = year ?? this.year
-      const range = rangeForYear(selectedYear)
+      const range = rangeFor(selectedYear, month)
 
       return Promise.all([
         statsServices.getSummary(range),
