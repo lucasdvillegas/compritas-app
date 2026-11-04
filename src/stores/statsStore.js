@@ -31,6 +31,8 @@ function rangeFor(year, month = null) {
   }
 }
 
+const TOP_PRODUCTS_LIMIT = 10
+
 export const useStatsStore = defineStore('stats', {
   state: () => ({
     summary: null,
@@ -57,7 +59,7 @@ export const useStatsStore = defineStore('stats', {
         statsServices.getSummary(range),
         statsServices.getMonthly({ year: selectedYear }),
         statsServices.getCategories(range),
-        statsServices.getProducts({ ...range, limit: 10 }),
+        statsServices.getProducts({ ...range, limit: TOP_PRODUCTS_LIMIT }),
       ])
         .then(([summary, monthly, categories, products]) => {
           this.summary = summary.data.data

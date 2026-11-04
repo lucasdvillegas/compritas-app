@@ -6,14 +6,16 @@
 
         <div class="col" style="min-width: 0">
           <div class="text-overline text-uppercase app-text-muted">Productos más comprados</div>
-          <div class="text-caption app-text-muted q-mt-xs">Ranking por cantidad de compras.</div>
+          <div class="text-caption app-text-muted q-mt-xs">
+            Top {{ limit }} por cantidad de compras.
+          </div>
         </div>
       </div>
     </q-card-section>
 
-    <q-card-section v-if="products.length > 0" class="q-pt-none">
+    <q-card-section v-if="visibleProducts.length > 0" class="q-pt-none">
       <div
-        v-for="(product, index) in products"
+        v-for="(product, index) in visibleProducts"
         :key="product.product_id ?? product.product_name"
         class="row items-start no-wrap q-gutter-x-sm app-surface-muted rounded-borders q-pa-sm q-mb-sm"
       >
@@ -53,16 +55,23 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { formatDate } from '@/utils/dates'
 import { pluralize } from '@/utils/pluralize'
 import { formatQuantity } from '@/utils/units'
 
-defineProps({
+const props = defineProps({
   products: {
     type: Array,
     required: true,
   },
+  limit: {
+    type: Number,
+    default: 10,
+  },
 })
+
+const visibleProducts = computed(() => props.products.slice(0, props.limit))
 
 function quantitySummary(product) {
   return Object.entries(product.quantities ?? {})
