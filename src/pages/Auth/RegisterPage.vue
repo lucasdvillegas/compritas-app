@@ -1,9 +1,8 @@
 <template>
   <div class="auth-form">
     <header class="auth-form__header">
-      <div class="auth-form__eyebrow">Registro</div>
-      <h1 class="auth-form__title">Entrá al desfile</h1>
-      <p class="auth-form__subtitle">El mundo puede esperar. Tu carrito, no.</p>
+      <h1 class="auth-form__title">Creá tu cuenta</h1>
+      <p class="auth-form__subtitle">Completá tus datos para empezar.</p>
     </header>
 
     <q-form @submit="onSubmit" class="q-mt-lg">
@@ -54,12 +53,23 @@
         v-model="confirmPassword"
         v-bind="confirmPasswordProps"
         label="Repetir contraseña"
-        :type="showPassword ? 'text' : 'password'"
+        :type="showConfirmPassword ? 'text' : 'password'"
         autocomplete="new-password"
         outlined
         dense
         :class="errors.confirmPassword ? 'q-mb-md' : 'q-mb-sm'"
-      />
+      >
+        <template #append>
+          <q-btn
+            flat
+            dense
+            round
+            :icon="showConfirmPassword ? 'visibility_off' : 'visibility'"
+            :aria-label="showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            @click="showConfirmPassword = !showConfirmPassword"
+          />
+        </template>
+      </q-input>
 
       <q-field v-bind="acceptTermsProps" borderless dense class="auth-form__terms">
         <template #control>
@@ -84,8 +94,8 @@
     </q-form>
 
     <div class="auth-form__footer">
-      ¿Ya conocés la banda?
-      <router-link :to="{ name: 'login' }" class="auth-form__link">Volver al show</router-link>
+      ¿Ya tenés cuenta?
+      <router-link :to="{ name: 'login' }" class="auth-form__link">Iniciá sesión</router-link>
     </div>
   </div>
 </template>
@@ -148,6 +158,7 @@ const [confirmPassword, confirmPasswordProps] = defineField('confirmPassword', f
 const [acceptTerms, acceptTermsProps] = defineField('acceptTerms', fieldConfig)
 
 const showPassword = ref(false)
+const showConfirmPassword = ref(false)
 
 function redirectTarget() {
   const redirect = route.query.redirect

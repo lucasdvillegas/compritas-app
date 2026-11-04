@@ -1,9 +1,8 @@
 <template>
   <div class="auth-form">
     <header class="auth-form__header">
-      <div class="auth-form__eyebrow">Acceso</div>
-      <h1 class="auth-form__title">Volvé al show</h1>
-      <p class="auth-form__subtitle">El mundo puede esperar. Tu carrito, no.</p>
+      <h1 class="auth-form__title">Iniciá sesión</h1>
+      <p class="auth-form__subtitle">Ingresá con tu correo y contraseña.</p>
     </header>
 
     <q-form @submit="onSubmit" class="q-mt-lg">
@@ -46,7 +45,7 @@
 
       <q-btn
         type="submit"
-        label="Entrar al show"
+        label="Ingresar"
         class="full-width auth-form__submit"
         no-caps
         unelevated
@@ -55,8 +54,8 @@
     </q-form>
 
     <div class="auth-form__footer">
-      ¿Aún no estás en la banda?
-      <router-link :to="{ name: 'register' }" class="auth-form__link">Sumate</router-link>
+      ¿No tenés cuenta?
+      <router-link :to="{ name: 'register' }" class="auth-form__link">Registrate</router-link>
     </div>
   </div>
 </template>

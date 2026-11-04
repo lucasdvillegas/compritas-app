@@ -3,7 +3,7 @@
     <div class="page-shell">
       <div>
         <h1 class="font-display text-h4 text-weight-bold app-text q-mt-xs q-mb-none">
-          El catálogo de la banda
+          El catálogo de productos
         </h1>
 
         <p class="text-body2 app-text-muted q-mt-sm q-mb-none">
