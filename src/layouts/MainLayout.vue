@@ -119,6 +119,12 @@ const links = [
     caption: 'Listas anteriores',
     icon: 'history',
   },
+  {
+    name: 'stats',
+    label: 'Estadísticas',
+    caption: 'Tus gastos y productos',
+    icon: 'insights',
+  },
 ]
 
 function toggleLeftDrawer() {

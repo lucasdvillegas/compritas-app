@@ -20,6 +20,11 @@ const routes = [
         name: 'history',
         component: () => import('@/pages/HistoryPage.vue'),
       },
+      {
+        path: 'stats',
+        name: 'stats',
+        component: () => import('@/pages/StatsPage.vue'),
+      },
     ],
   },
 
