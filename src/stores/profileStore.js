@@ -1,5 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { profileServices } from '@/services/profileServices'
+import { useAuthStore } from '@/stores/authStore'
 
 export const useProfileStore = defineStore('profile', {
   state: () => ({
@@ -23,6 +24,20 @@ export const useProfileStore = defineStore('profile', {
         .finally(() => {
           this.loading = false
         })
+    },
+
+    updateName(name) {
+      return profileServices.updateProfile({ name }).then(({ data }) => {
+        this.user = data.data.user
+
+        const authStore = useAuthStore()
+
+        if (authStore.user) {
+          authStore.user = { ...authStore.user, name: this.user.name }
+        }
+
+        return this.user
+      })
     },
 
     regeneratePin() {

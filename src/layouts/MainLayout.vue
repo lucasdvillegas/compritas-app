@@ -28,10 +28,6 @@
               {{ unreadCount > 9 ? '9+' : unreadCount }}
             </q-badge>
           </q-btn>
-
-          <span class="text-body2 app-text-muted gt-xs">
-            {{ authStore.user?.name ?? 'Tu cuenta' }}
-          </span>
         </div>
       </q-toolbar>
     </q-header>
@@ -39,13 +35,19 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above :width="286" class="app-page">
       <div class="column justify-between fit q-pa-md">
         <div>
-          <div class="row items-center no-wrap q-gutter-x-sm q-px-sm q-pt-sm q-pb-lg">
-            <q-avatar size="28px">
-              <img :src="mark" alt="" aria-hidden="true" />
-            </q-avatar>
-            <div>
-              <div class="text-overline text-uppercase app-text-muted">Compritapp</div>
-            </div>
+          <div class="q-px-sm q-pt-sm q-pb-lg">
+            <q-card class="app-primary-card">
+              <q-card-section class="row items-center q-gutter-x-sm q-pa-md">
+                <q-avatar class="app-primary-avatar" icon="waving_hand" />
+
+                <div class="col" style="min-width: 0">
+                  <div class="font-display text-h6 text-weight-bold app-text ellipsis">
+                    {{ greeting }}
+                  </div>
+                  <div class="text-caption app-text-muted q-mt-xs">¿Qué compramos hoy?</div>
+                </div>
+              </q-card-section>
+            </q-card>
           </div>
 
           <q-list class="q-gutter-y-xs">
@@ -182,7 +184,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
@@ -191,7 +193,6 @@ import { useNotificationsStore } from '@/stores/notificationsStore'
 import { useProfileStore } from '@/stores/profileStore'
 import { useRefreshOnFocus } from '@/composables/useRefreshOnFocus'
 import { formatDateTime } from '@/utils/dates'
-import mark from '@/assets/black-parade-mark.svg'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -201,6 +202,10 @@ const profileStore = useProfileStore()
 const { unreadCount, notifications, loading } = storeToRefs(notificationsStore)
 const leftDrawerOpen = ref(false)
 const rightDrawerOpen = ref(false)
+
+const firstName = computed(() => authStore.user?.name?.trim().split(/\s+/)[0] ?? '')
+
+const greeting = computed(() => (firstName.value ? `Hola, ${firstName.value}.` : 'Hola.'))
 
 onMounted(refreshUnreadCount)
 useRefreshOnFocus(refreshOnFocus)

@@ -5,6 +5,10 @@ export const profileServices = {
     return api.get('/profile')
   },
 
+  updateProfile(payload) {
+    return api.patch('/profile', payload)
+  },
+
   regeneratePin() {
     return api.post('/profile/pin/regenerate')
   },

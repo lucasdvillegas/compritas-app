@@ -14,13 +14,27 @@
       </div>
 
       <template v-else>
-        <q-card flat bordered class="q-mt-xl">
+        <q-card class="q-mt-xl app-primary-card">
           <q-card-section>
-            <div class="text-overline text-uppercase app-text-muted">Datos</div>
-            <div class="font-display text-h6 text-weight-bold app-text q-mt-xs">
+            <div class="row items-center q-gutter-x-sm">
+              <q-avatar class="app-primary-avatar" icon="person" />
+              <div class="text-overline text-uppercase app-text-muted">Datos</div>
+            </div>
+
+            <div class="font-display text-h5 text-weight-bold app-text q-mt-sm">
               {{ user?.name }}
             </div>
             <div class="text-body2 app-text-muted q-mt-xs">{{ user?.email }}</div>
+
+            <q-btn
+              class="q-mt-md"
+              outline
+              color="white"
+              icon="edit"
+              label="Cambiar nombre"
+              no-caps
+              @click="openNameDialog"
+            />
           </q-card-section>
         </q-card>
 
@@ -124,6 +138,48 @@ function copyPin() {
       type: 'positive',
       message: 'PIN copiado.',
     })
+  })
+}
+
+function openNameDialog() {
+  $q.dialog({
+    title: 'Cambiar nombre',
+    message: 'Este nombre se va a mostrar en el menú y en las listas compartidas.',
+    prompt: {
+      model: user.value?.name ?? '',
+      type: 'text',
+      label: 'Nombre',
+      outlined: true,
+      dense: true,
+    },
+    cancel: { label: 'Cancelar', flat: true, noCaps: true },
+    ok: { label: 'Guardar', color: 'primary', unelevated: true, noCaps: true },
+    persistent: true,
+  }).onOk((name) => {
+    const nextName = name.trim()
+
+    if (!nextName) {
+      $q.notify({
+        type: 'negative',
+        message: 'El nombre no puede estar vacío.',
+      })
+
+      return
+    }
+
+    if (nextName === user.value?.name) {
+      return
+    }
+
+    profileStore
+      .updateName(nextName)
+      .then(() => {
+        $q.notify({
+          type: 'positive',
+          message: 'Nombre actualizado.',
+        })
+      })
+      .catch(notifyError)
   })
 }
 
