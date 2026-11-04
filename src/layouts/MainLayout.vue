@@ -1,8 +1,16 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="app-surface app-text">
+    <q-header class="app-page app-text">
       <q-toolbar class="q-py-sm">
-        <q-btn flat dense round icon="menu" aria-label="Abrir menú" @click="toggleLeftDrawer" />
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          color="primary"
+          aria-label="Abrir menú"
+          @click="toggleLeftDrawer"
+        />
 
         <q-toolbar-title class="row items-center no-wrap q-gutter-x-sm"> </q-toolbar-title>
 
@@ -12,6 +20,7 @@
             dense
             round
             icon="notifications"
+            color="primary"
             aria-label="Notificaciones"
             @click="toggleRightDrawer"
           >
@@ -27,7 +36,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="286" class="app-surface">
+    <q-drawer v-model="leftDrawerOpen" show-if-above :width="286" class="app-page">
       <div class="column justify-between fit q-pa-md">
         <div>
           <div class="row items-center no-wrap q-gutter-x-sm q-px-sm q-pt-sm q-pb-lg">
@@ -81,9 +90,8 @@
       v-model="rightDrawerOpen"
       side="right"
       overlay
-      bordered
       :width="360"
-      class="app-surface"
+      class="app-page"
     >
       <div class="column fit">
         <div class="row items-center justify-between q-pa-md">

@@ -159,7 +159,7 @@ import poster from '../assets/drum-major.jpg'
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #e05a6e;
+  color: #a52835;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.24em;
@@ -170,7 +170,7 @@ import poster from '../assets/drum-major.jpg'
   content: '';
   width: 20px;
   height: 1px;
-  background: #e05a6e;
+  background: #a52835;
 }
 
 .auth-layout__visual-title {

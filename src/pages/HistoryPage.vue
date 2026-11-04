@@ -13,26 +13,16 @@
         <div class="text-body2 q-mt-sm">Cargando historial...</div>
       </div>
 
-      <q-card v-else-if="lists.length === 0" flat bordered class="q-mt-xl">
-        <q-card-section>
-          <q-avatar class="app-avatar" icon="history" />
-          <div class="font-display text-h6 text-weight-bold app-text q-mt-md">
-            Sin historial por ahora
-          </div>
-          <div class="text-body2 app-text-muted q-mt-xs">
-            Cuando completes una lista va a quedar guardada acá con todos sus productos.
-          </div>
-          <q-btn
-            class="q-mt-lg"
-            color="primary"
-            icon="playlist_add_check"
-            label="Ir a mis listas"
-            unelevated
-            no-caps
-            :to="{ name: 'my-list' }"
-          />
-        </q-card-section>
-      </q-card>
+      <AppEmptyState
+        v-else-if="lists.length === 0"
+        class="q-mt-xl"
+        icon="history"
+        title="Sin historial por ahora"
+        description="Cuando completes una lista va a quedar guardada acá con todos sus productos."
+        action-label="Ir a mis listas"
+        action-icon="playlist_add_check"
+        :action-to="{ name: 'my-list' }"
+      />
 
       <template v-else>
         <div class="row items-center justify-between q-mt-xl">
@@ -92,6 +82,7 @@ import { formatDate } from '@/utils/dates'
 import { formatMoney } from '@/utils/money'
 import { pluralize } from '@/utils/pluralize'
 import ListDetailDialog from '@/components/Lists/ListDetailDialog.vue'
+import AppEmptyState from '@/components/AppEmptyState.vue'
 
 const $q = useQuasar()
 

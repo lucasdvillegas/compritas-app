@@ -22,44 +22,59 @@
         />
       </div>
 
-      <q-table
-        :rows="categories"
-        :columns="columns"
-        row-key="id"
-        :loading="loading"
-        :pagination="{ rowsPerPage: 0 }"
-        :rows-per-page-options="[0]"
-        hide-pagination
-        flat
-        bordered
-        class="q-mt-xl"
-        no-data-label="Todavía no hay categorías"
-        loading-label="Cargando categorías..."
-      >
-        <template #body-cell-actions="props">
-          <q-td :props="props" class="text-right">
-            <q-btn
-              flat
-              dense
-              round
-              icon="edit"
-              color="primary"
-              :aria-label="`Editar ${props.row.name}`"
-              @click="openCategoryDialog(props.row)"
-            />
+      <div v-if="loading" class="column items-center q-pa-xl app-text-muted">
+        <q-spinner color="primary" size="32px" />
+        <div class="text-body2 q-mt-sm">Cargando categorías...</div>
+      </div>
 
-            <q-btn
-              flat
-              dense
-              round
-              icon="delete"
-              color="negative"
-              :aria-label="`Eliminar ${props.row.name}`"
-              @click="confirmDelete(props.row)"
-            />
-          </q-td>
-        </template>
-      </q-table>
+      <AppEmptyState
+        v-else-if="categories.length === 0"
+        class="q-mt-xl"
+        icon="category"
+        title="Todavía no hay categorías"
+        description="Creá tu primera categoría para ordenar tus productos."
+        action-label="Nueva categoría"
+        action-icon="add"
+        @action="openCategoryDialog()"
+      />
+
+      <div v-else class="q-mt-xl">
+        <q-card
+          v-for="category in categories"
+          :key="category.id"
+          flat
+          bordered
+          class="app-surface q-mb-sm"
+        >
+          <q-card-section class="row items-center no-wrap q-py-sm">
+            <div class="col" style="min-width: 0">
+              <div class="text-weight-medium app-text ellipsis">{{ category.name }}</div>
+            </div>
+
+            <div class="row items-center no-wrap q-gutter-x-xs">
+              <q-btn
+                flat
+                dense
+                round
+                icon="edit"
+                color="primary"
+                :aria-label="`Editar ${category.name}`"
+                @click="openCategoryDialog(category)"
+              />
+
+              <q-btn
+                flat
+                dense
+                round
+                icon="delete"
+                color="negative"
+                :aria-label="`Eliminar ${category.name}`"
+                @click="confirmDelete(category)"
+              />
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
     </div>
   </q-page>
 </template>
@@ -69,13 +84,9 @@ import { onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { categoriesServices } from '@/services/categoriesServices'
 import CategoryDialog from '@/components/Categories/CategoryDialog.vue'
+import AppEmptyState from '@/components/AppEmptyState.vue'
 
 const $q = useQuasar()
-
-const columns = [
-  { name: 'name', label: 'Nombre', field: 'name', align: 'left', sortable: true },
-  { name: 'actions', label: 'Acciones', field: 'actions', align: 'right' },
-]
 
 const categories = ref([])
 const loading = ref(false)

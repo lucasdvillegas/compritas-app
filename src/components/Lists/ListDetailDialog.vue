@@ -38,12 +38,13 @@
           <div class="text-body2 q-mt-sm">Cargando lista...</div>
         </div>
 
-        <div v-else-if="items.length === 0" class="q-pa-xl text-center">
-          <q-icon name="shopping_basket" size="40px" class="app-text-subtle" />
-          <div class="text-body1 text-weight-medium app-text q-mt-sm">
-            Esta lista no tiene productos
-          </div>
-        </div>
+        <AppEmptyState
+          v-else-if="items.length === 0"
+          variant="plain"
+          icon="shopping_basket"
+          icon-size="40px"
+          title="Esta lista no tiene productos"
+        />
 
         <q-list v-else separator>
           <q-item v-for="item in items" :key="item.id" class="q-py-md">
@@ -122,6 +123,7 @@ import { formatDateTime } from '@/utils/dates'
 import { formatMoney } from '@/utils/money'
 import { pluralize } from '@/utils/pluralize'
 import { formatQuantity, isWeightUnit } from '@/utils/units'
+import AppEmptyState from '@/components/AppEmptyState.vue'
 
 const props = defineProps({
   list: {

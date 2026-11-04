@@ -24,9 +24,12 @@
           </q-card-section>
         </q-card>
 
-        <q-card flat bordered class="q-mt-lg">
+        <q-card class="q-mt-lg app-primary-card">
           <q-card-section>
-            <div class="text-overline text-uppercase app-text-muted">Tu PIN para compartir</div>
+            <div class="row items-center q-gutter-x-sm">
+              <q-avatar class="app-primary-avatar" icon="pin" />
+              <div class="text-overline text-uppercase app-text-muted">Tu PIN para compartir</div>
+            </div>
 
             <div class="row items-center q-gutter-sm q-mt-sm">
               <div class="font-display text-h3 text-weight-bold app-text pin-display">
@@ -37,7 +40,7 @@
                 dense
                 round
                 icon="content_copy"
-                color="primary"
+                color="white"
                 aria-label="Copiar PIN"
                 @click="copyPin"
               />
@@ -51,7 +54,7 @@
             <q-btn
               class="q-mt-md"
               outline
-              color="primary"
+              color="white"
               icon="autorenew"
               label="Regenerar PIN"
               no-caps
@@ -60,9 +63,11 @@
           </q-card-section>
         </q-card>
 
-        <q-card flat bordered class="q-mt-lg">
-          <q-card-section class="row items-center justify-between q-gutter-x-md">
-            <div>
+        <q-card class="q-mt-lg app-primary-card">
+          <q-card-section class="row items-center q-gutter-x-md">
+            <q-avatar class="app-primary-avatar" icon="palette" />
+
+            <div class="col">
               <div class="text-overline text-uppercase app-text-muted">Apariencia</div>
               <div class="text-body1 text-weight-medium app-text q-mt-xs">Modo oscuro</div>
               <div class="text-body2 app-text-muted q-mt-xs">
@@ -70,7 +75,7 @@
               </div>
             </div>
 
-            <q-toggle v-model="isDark" color="primary" aria-label="Modo oscuro" />
+            <q-toggle v-model="isDark" color="white" aria-label="Modo oscuro" />
           </q-card-section>
         </q-card>
       </template>

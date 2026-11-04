@@ -12,6 +12,10 @@
   --app-track: #e5e7eb;
   --app-chip-bg: #f2f3f5;
   --app-chip-text: #3c4043;
+  --app-radius: 14px;
+  --app-radius-lg: 18px;
+  --app-radius-sm: 12px;
+  --app-primary-card: #a52835;
 }
 
 body.body--dark {
@@ -25,12 +29,20 @@ body.body--dark {
   --app-track: #333333;
   --app-chip-bg: #2a2a2a;
   --app-chip-text: #e8eaed;
-  --q-primary: #e05a6e;
+  --app-primary-card: #8f2230;
 }
 
 body {
   background: var(--app-bg);
   color: var(--app-text);
+}
+
+// Layout y páginas comparten el mismo fondo, sin bordes ni sombras divisorias.
+.q-header,
+.q-drawer {
+  background: var(--app-bg) !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
 .page-shell {
@@ -84,6 +96,71 @@ body {
   color: var(--q-primary) !important;
 }
 
+.q-card.app-primary-card {
+  background: var(--app-primary-card) !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+body.body--dark .q-card.app-primary-card {
+  background: var(--app-primary-card) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.app-primary-card .app-text,
+.app-primary-card .app-text-subtle {
+  color: rgba(255, 255, 255, 0.94) !important;
+}
+
+.app-primary-card .app-text-muted {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.app-primary-avatar {
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+}
+
+// Radios más propios de una app mobile.
+.q-card {
+  border-radius: var(--app-radius) !important;
+}
+
+.q-btn:not(.q-btn--round):not(.q-btn--rounded) {
+  border-radius: var(--app-radius-sm) !important;
+}
+
+.q-btn-toggle {
+  border-radius: var(--app-radius-sm) !important;
+  overflow: hidden;
+}
+
+.q-btn-toggle .q-btn.q-btn {
+  border-radius: 0 !important;
+}
+
+.q-btn-toggle .q-btn.q-btn:first-child {
+  border-top-left-radius: var(--app-radius-sm) !important;
+  border-bottom-left-radius: var(--app-radius-sm) !important;
+}
+
+.q-btn-toggle .q-btn.q-btn:last-child {
+  border-top-right-radius: var(--app-radius-sm) !important;
+  border-bottom-right-radius: var(--app-radius-sm) !important;
+}
+
+.q-field--outlined .q-field__control,
+.q-field--outlined .q-field__control:before,
+.q-field--outlined .q-field__control:after {
+  border-radius: var(--app-radius-sm) !important;
+}
+
+.rounded-borders {
+  border-radius: var(--app-radius-sm) !important;
+}
+
 .app-progress .q-linear-progress__track {
   background: var(--app-track) !important;
   opacity: 1 !important;
@@ -92,14 +169,14 @@ body {
 // Modals: sin sombra, con borde y esquinas redondeadas.
 .q-dialog .q-card {
   border: 1px solid var(--app-border) !important;
-  border-radius: 4px !important;
+  border-radius: var(--app-radius-lg) !important;
   box-shadow: none !important;
 }
 
 // Desplegables de selects/menús: sin sombra, con borde y esquinas redondeadas.
 .q-menu {
   border: 1px solid var(--app-border) !important;
-  border-radius: 4px !important;
+  border-radius: var(--app-radius-sm) !important;
   box-shadow: none !important;
 }
 

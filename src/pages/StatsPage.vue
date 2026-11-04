@@ -38,25 +38,15 @@
         <div class="text-body2 q-mt-sm">Cargando estadísticas...</div>
       </div>
 
-      <q-card v-else-if="summary && summary.lists_count === 0" flat bordered class="q-mt-xl">
-        <q-card-section class="column items-center text-center q-pa-xl">
-          <q-icon name="insights" size="44px" class="app-text-subtle" />
-          <div class="font-display text-h6 text-weight-bold app-text q-mt-md">
-            Todavía no hay datos para {{ selectedYear }}
-          </div>
-          <div class="text-body2 app-text-muted q-mt-xs">
-            Completá una lista para ver tus gastos y estadísticas.
-          </div>
-          <q-btn
-            class="q-mt-lg"
-            color="primary"
-            label="Ir a mis listas"
-            unelevated
-            no-caps
-            :to="{ name: 'my-list' }"
-          />
-        </q-card-section>
-      </q-card>
+      <AppEmptyState
+        v-else-if="summary && summary.lists_count === 0"
+        class="q-mt-xl"
+        icon="insights"
+        :title="`Todavía no hay datos para ${selectedYear}`"
+        description="Completá una lista para ver tus gastos y estadísticas."
+        action-label="Ir a mis listas"
+        :action-to="{ name: 'my-list' }"
+      />
 
       <template v-else-if="summary">
         <StatsSummaryCards :summary="summary" class="q-mt-xl" />
@@ -88,6 +78,7 @@ import StatsSummaryCards from '@/components/Stats/StatsSummaryCards.vue'
 import MonthlyChart from '@/components/Stats/MonthlyChart.vue'
 import CategoryBreakdown from '@/components/Stats/CategoryBreakdown.vue'
 import TopProducts from '@/components/Stats/TopProducts.vue'
+import AppEmptyState from '@/components/AppEmptyState.vue'
 
 const $q = useQuasar()
 const statsStore = useStatsStore()

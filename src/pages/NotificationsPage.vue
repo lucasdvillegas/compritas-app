@@ -44,17 +44,13 @@
         <div class="text-body2 q-mt-sm">Cargando notificaciones...</div>
       </div>
 
-      <q-card v-else-if="notifications.length === 0" flat bordered class="q-mt-lg">
-        <q-card-section class="column items-center text-center q-pa-xl">
-          <q-icon name="notifications_none" size="44px" class="app-text-subtle" />
-          <div class="font-display text-h6 text-weight-bold app-text q-mt-md">
-            No tenés notificaciones
-          </div>
-          <div class="text-body2 app-text-muted q-mt-xs">
-            Cuando te inviten a una lista o se complete una compra, vas a verlo acá.
-          </div>
-        </q-card-section>
-      </q-card>
+      <AppEmptyState
+        v-else-if="notifications.length === 0"
+        class="q-mt-lg"
+        icon="notifications_none"
+        title="No tenés notificaciones"
+        description="Cuando te inviten a una lista o se complete una compra, vas a verlo acá."
+      />
 
       <q-list v-else separator class="q-mt-lg">
         <q-item
@@ -136,6 +132,7 @@ import { useNotificationsStore } from '@/stores/notificationsStore'
 import { useListsStore } from '@/stores/listsStore'
 import { formatDateTime } from '@/utils/dates'
 import { useRefreshOnFocus } from '@/composables/useRefreshOnFocus'
+import AppEmptyState from '@/components/AppEmptyState.vue'
 
 const $q = useQuasar()
 const notificationsStore = useNotificationsStore()

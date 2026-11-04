@@ -27,28 +27,17 @@
         <div class="text-body2 q-mt-sm">Cargando tus listas...</div>
       </div>
 
-      <q-card v-else-if="lists.length === 0" flat bordered class="q-mt-xl">
-        <q-card-section>
-          <q-avatar class="app-avatar" icon="playlist_add_check" />
-          <div class="font-display text-h6 text-weight-bold app-text q-mt-md">
-            Todavía no tenés listas abiertas
-          </div>
-          <div class="text-body2 app-text-muted q-mt-xs">
-            Creá tu primera lista y empezá a agregar productos. Podés tener varias listas abiertas
-            al mismo tiempo.
-          </div>
-          <q-btn
-            class="q-mt-lg"
-            color="primary"
-            icon="add"
-            label="Crear lista"
-            unelevated
-            no-caps
-            :loading="savingList"
-            @click="openCreateDialog"
-          />
-        </q-card-section>
-      </q-card>
+      <AppEmptyState
+        v-else-if="lists.length === 0"
+        class="q-mt-xl"
+        icon="playlist_add_check"
+        title="Todavía no tenés listas abiertas"
+        description="Creá tu primera lista y empezá a agregar productos. Podés tener varias listas abiertas al mismo tiempo."
+        action-label="Crear lista"
+        action-icon="add"
+        :action-loading="savingList"
+        @action="openCreateDialog"
+      />
 
       <template v-else>
         <div class="row items-center justify-between q-mt-xl">
@@ -88,13 +77,13 @@
         </q-card>
 
         <q-card v-else-if="!activeList" flat bordered class="q-mt-md">
-          <q-card-section class="text-center q-pa-xl">
-            <q-icon name="touch_app" size="40px" class="app-text-subtle" />
-            <div class="text-body1 text-weight-medium app-text q-mt-sm">Elegí una lista</div>
-            <div class="text-body2 app-text-muted q-mt-xs">
-              Seleccioná una de las listas abiertas para ver sus productos.
-            </div>
-          </q-card-section>
+          <AppEmptyState
+            variant="plain"
+            icon="touch_app"
+            icon-size="40px"
+            title="Elegí una lista"
+            description="Seleccioná una de las listas abiertas para ver sus productos."
+          />
         </q-card>
 
         <q-card v-else flat bordered class="q-mt-md">
@@ -255,22 +244,16 @@
             <div class="text-body2 q-mt-sm">Cargando lista...</div>
           </div>
 
-          <q-card-section v-else-if="activeItems.length === 0" class="text-center q-pa-xl">
-            <q-icon name="shopping_basket" size="44px" class="app-text-subtle" />
-            <div class="text-body1 text-weight-medium app-text q-mt-sm">Esta lista está vacía</div>
-            <div class="text-body2 app-text-muted q-mt-xs">
-              Sumá productos desde tu catálogo. Después podés marcarlos desde la lista.
-            </div>
-            <q-btn
-              class="q-mt-lg"
-              color="primary"
-              icon="add"
-              label="Agregar productos"
-              unelevated
-              no-caps
-              @click="openProductPicker"
-            />
-          </q-card-section>
+          <AppEmptyState
+            v-else-if="activeItems.length === 0"
+            variant="plain"
+            icon="shopping_basket"
+            title="Esta lista está vacía"
+            description="Sumá productos desde tu catálogo. Después podés marcarlos desde la lista."
+            action-label="Agregar productos"
+            action-icon="add"
+            @action="openProductPicker"
+          />
 
           <q-list v-else separator>
             <q-slide-item
@@ -325,6 +308,7 @@ import ItemQuantityDialog from '@/components/Lists/ItemQuantityDialog.vue'
 import ListTotalDialog from '@/components/Lists/ListTotalDialog.vue'
 import ProductPickerDialog from '@/components/Lists/ProductPickerDialog.vue'
 import ShareListDialog from '@/components/Lists/ShareListDialog.vue'
+import AppEmptyState from '@/components/AppEmptyState.vue'
 
 const $q = useQuasar()
 const listsStore = useListsStore()

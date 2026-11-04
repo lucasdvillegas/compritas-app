@@ -56,19 +56,18 @@
           <div class="text-body2 q-mt-sm">Cargando productos...</div>
         </div>
 
-        <div v-else-if="filteredProducts.length === 0" class="q-pa-xl text-center">
-          <q-icon name="inventory_2" size="40px" class="app-text-subtle" />
-          <div class="text-body1 text-weight-medium app-text q-mt-sm">
-            {{ products.length === 0 ? 'Tu catálogo está vacío' : 'No encontramos productos' }}
-          </div>
-          <div class="text-body2 app-text-muted q-mt-xs">
-            {{
-              products.length === 0
-                ? 'Creá tu primer producto para sumarlo a la lista.'
-                : 'Probá con otro nombre.'
-            }}
-          </div>
-        </div>
+        <AppEmptyState
+          v-else-if="filteredProducts.length === 0"
+          variant="plain"
+          :icon="products.length === 0 ? 'inventory_2' : 'search_off'"
+          icon-size="40px"
+          :title="products.length === 0 ? 'Tu catálogo está vacío' : 'No encontramos productos'"
+          :description="
+            products.length === 0
+              ? 'Creá tu primer producto para sumarlo a la lista.'
+              : 'Probá con otro nombre.'
+          "
+        />
 
         <q-list v-else separator>
           <q-slide-item
@@ -145,6 +144,7 @@ import { productsServices } from '@/services/productsServices'
 import { unitSaleLabel } from '@/utils/units'
 import { useListsStore } from '@/stores/listsStore'
 import ProductDialog from '@/components/Products/ProductDialog.vue'
+import AppEmptyState from '@/components/AppEmptyState.vue'
 
 const props = defineProps({
   list: {

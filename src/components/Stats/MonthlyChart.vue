@@ -54,8 +54,8 @@ function monthLabel(value) {
 const chartColors = computed(() =>
   $q.dark.isActive
     ? {
-        bar: 'rgba(224, 90, 110, 0.85)',
-        barHover: 'rgba(224, 90, 110, 1)',
+        bar: 'rgba(165, 40, 53, 0.9)',
+        barHover: 'rgba(165, 40, 53, 1)',
         text: '#e8eaed',
         grid: 'rgba(255, 255, 255, 0.08)',
       }

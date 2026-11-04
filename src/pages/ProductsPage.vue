@@ -22,44 +22,63 @@
         />
       </div>
 
-      <q-table
-        :rows="products"
-        :columns="columns"
-        row-key="id"
-        :loading="loading"
-        :pagination="{ rowsPerPage: 0 }"
-        :rows-per-page-options="[0]"
-        hide-pagination
-        flat
-        bordered
-        class="q-mt-xl"
-        no-data-label="Todavía no hay productos"
-        loading-label="Cargando productos..."
-      >
-        <template #body-cell-actions="props">
-          <q-td :props="props" class="text-right">
-            <q-btn
-              flat
-              dense
-              round
-              icon="edit"
-              color="primary"
-              :aria-label="`Editar ${props.row.name}`"
-              @click="openProductDialog(props.row)"
-            />
+      <div v-if="loading" class="column items-center q-pa-xl app-text-muted">
+        <q-spinner color="primary" size="32px" />
+        <div class="text-body2 q-mt-sm">Cargando productos...</div>
+      </div>
 
-            <q-btn
-              flat
-              dense
-              round
-              icon="delete"
-              color="negative"
-              :aria-label="`Eliminar ${props.row.name}`"
-              @click="confirmDelete(props.row)"
-            />
-          </q-td>
-        </template>
-      </q-table>
+      <AppEmptyState
+        v-else-if="products.length === 0"
+        class="q-mt-xl"
+        icon="inventory_2"
+        title="Todavía no hay productos"
+        description="Creá tu primer producto para sumarlo a tus listas."
+        action-label="Nuevo producto"
+        action-icon="add"
+        @action="openProductDialog()"
+      />
+
+      <div v-else class="q-mt-xl">
+        <q-card
+          v-for="product in products"
+          :key="product.id"
+          flat
+          bordered
+          class="app-surface q-mb-sm"
+        >
+          <q-card-section class="row items-center no-wrap q-py-sm">
+            <div class="col" style="min-width: 0">
+              <div class="text-weight-medium app-text ellipsis">{{ product.name }}</div>
+              <div class="text-caption app-text-muted ellipsis">
+                {{ product.category?.name || 'Sin categoría' }} ·
+                {{ unitSaleLabel(product.unit) }}
+              </div>
+            </div>
+
+            <div class="row items-center no-wrap q-gutter-x-xs">
+              <q-btn
+                flat
+                dense
+                round
+                icon="edit"
+                color="primary"
+                :aria-label="`Editar ${product.name}`"
+                @click="openProductDialog(product)"
+              />
+
+              <q-btn
+                flat
+                dense
+                round
+                icon="delete"
+                color="negative"
+                :aria-label="`Eliminar ${product.name}`"
+                @click="confirmDelete(product)"
+              />
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
     </div>
   </q-page>
 </template>
@@ -70,27 +89,9 @@ import { useQuasar } from 'quasar'
 import { productsServices } from '@/services/productsServices'
 import { unitSaleLabel } from '@/utils/units'
 import ProductDialog from '@/components/Products/ProductDialog.vue'
+import AppEmptyState from '@/components/AppEmptyState.vue'
 
 const $q = useQuasar()
-
-const columns = [
-  { name: 'name', label: 'Nombre', field: 'name', align: 'left', sortable: true },
-  {
-    name: 'category',
-    label: 'Categoría',
-    field: (row) => row.category?.name ?? '',
-    align: 'left',
-    sortable: true,
-  },
-  {
-    name: 'unit',
-    label: 'Se vende',
-    field: (row) => unitSaleLabel(row.unit),
-    align: 'left',
-    sortable: true,
-  },
-  { name: 'actions', label: 'Acciones', field: 'actions', align: 'right' },
-]
 
 const products = ref([])
 const loading = ref(false)
