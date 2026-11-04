@@ -17,6 +17,8 @@
   --app-radius-sm: 12px;
   --app-primary-card: #a52835;
   --app-accent-card: #2f5d62;
+  --app-accent: #2f5d62;
+  --app-accent-soft: #e8f1f0;
   --app-success: #3f7d5c;
   --app-warning: #a8752a;
   --app-info: #55606a;
@@ -43,6 +45,8 @@ body.body--dark {
   --app-chip-text: #e8eaed;
   --app-primary-card: #8f2230;
   --app-accent-card: #274d51;
+  --app-accent: #7fb5ae;
+  --app-accent-soft: #203638;
   --app-success: #74b894;
   --app-warning: #d3a15c;
   --app-info: #9aa6b1;
@@ -225,8 +229,22 @@ body.app-typography-dyslexic .text-caption {
 }
 
 .app-avatar {
-  background: var(--app-chip-bg) !important;
-  color: var(--q-primary) !important;
+  background: var(--app-accent-soft) !important;
+  color: var(--app-accent) !important;
+}
+
+.app-accent-text,
+.app-accent-text .q-icon {
+  color: var(--app-accent) !important;
+}
+
+.app-accent-chip {
+  background: var(--app-accent-soft) !important;
+  color: var(--app-accent) !important;
+}
+
+.app-progress-accent .q-linear-progress__model {
+  background: var(--app-accent) !important;
 }
 
 .q-card.app-primary-card {

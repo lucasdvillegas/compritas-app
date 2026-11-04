@@ -85,11 +85,11 @@
 
                 <div class="row items-center no-wrap q-gutter-x-xs">
                   <q-btn
+                    class="app-accent-text"
                     flat
                     dense
                     round
                     icon="edit"
-                    color="primary"
                     :aria-label="`Editar ${product.name}`"
                     @click="openProductDialog(product)"
                   />

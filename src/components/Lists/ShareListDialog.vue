@@ -74,7 +74,7 @@
             <q-item-section>
               <q-item-label class="text-weight-medium app-text">
                 {{ member.name }}
-                <q-badge v-if="member.role === 'owner'" class="app-chip q-ml-xs">
+                <q-badge v-if="member.role === 'owner'" class="app-accent-chip q-ml-xs">
                   Dueño
                 </q-badge>
               </q-item-label>

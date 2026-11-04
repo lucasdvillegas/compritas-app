@@ -113,20 +113,20 @@
                   <q-icon
                     name="payments"
                     size="20px"
-                    :color="activeTotal > 0 ? 'primary' : 'grey-5'"
+                    :class="activeTotal > 0 ? 'app-accent-text' : 'app-text-subtle'"
                   />
                   <div class="text-body1 text-weight-bold app-text">
                     {{ formatMoney(activeTotal) }}
                   </div>
 
                   <template v-if="activeManualTotal !== null">
-                    <q-badge class="app-chip">Total manual</q-badge>
+                    <q-badge class="app-accent-chip">Total manual</q-badge>
                     <q-btn
+                      class="app-accent-text"
                       flat
                       dense
                       round
                       size="sm"
-                      color="primary"
                       icon="edit"
                       aria-label="Editar total"
                       @click="openTotalDialog"
@@ -139,11 +139,11 @@
                     </div>
 
                     <q-btn
+                      class="app-accent-text"
                       flat
                       dense
                       no-caps
                       size="sm"
-                      color="primary"
                       icon="edit_note"
                       label="Ingresar total"
                       @click="openTotalDialog"
@@ -208,9 +208,8 @@
               :value="progress"
               rounded
               size="8px"
-              color="primary"
               :track-color="$q.dark.isActive ? 'grey-9' : 'grey-3'"
-              class="q-mt-md"
+              class="app-progress-accent q-mt-md"
             />
 
             <div class="row justify-end q-gutter-sm q-mt-md">

@@ -77,7 +77,7 @@
           </q-card-section>
         </q-card>
 
-        <q-card class="q-mt-lg app-primary-card">
+        <q-card class="q-mt-lg app-accent-card">
           <q-card-section class="row items-center q-gutter-x-md">
             <q-avatar class="app-primary-avatar" icon="palette" />
 
