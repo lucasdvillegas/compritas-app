@@ -35,7 +35,7 @@
               <img :src="mark" alt="" aria-hidden="true" />
             </q-avatar>
             <div>
-              <div class="text-overline text-uppercase text-grey-6">We'll carry on</div>
+              <div class="text-overline text-uppercase text-grey-6">Compritapp</div>
             </div>
           </div>
 
@@ -46,7 +46,7 @@
               :to="{ name: link.name }"
               clickable
               exact
-              class="rounded-borders"
+              class="rounded-borders q-py-sm"
               active-class="bg-grey-2 text-primary"
             >
               <q-item-section avatar>
@@ -55,7 +55,6 @@
 
               <q-item-section>
                 <q-item-label class="text-weight-medium">{{ link.label }}</q-item-label>
-                <q-item-label caption>{{ link.caption }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -64,14 +63,13 @@
         <div class="q-pt-md">
           <q-separator />
           <q-list class="q-mt-sm">
-            <q-item clickable class="rounded-borders" @click="onLogout">
+            <q-item clickable class="rounded-borders q-py-sm" @click="onLogout">
               <q-item-section avatar>
                 <q-icon name="logout" size="20px" />
               </q-item-section>
 
               <q-item-section>
                 <q-item-label class="text-weight-medium">Salir</q-item-label>
-                <q-item-label caption>Cerrar sesión</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -119,43 +117,36 @@ const links = [
   {
     name: 'my-list',
     label: 'Mi lista',
-    caption: 'Tus listas de compras abiertas',
     icon: 'playlist_add_check',
   },
   {
     name: 'products',
     label: 'Productos',
-    caption: 'Catálogo de productos',
     icon: 'inventory_2',
   },
   {
     name: 'categories',
     label: 'Categorías',
-    caption: 'Organizá tu catálogo',
     icon: 'category',
   },
   {
     name: 'history',
     label: 'Historial',
-    caption: 'Listas anteriores',
     icon: 'history',
   },
   {
     name: 'stats',
     label: 'Estadísticas',
-    caption: 'Tus gastos y productos',
     icon: 'insights',
   },
   {
     name: 'notifications',
     label: 'Notificaciones',
-    caption: 'Invitaciones y avisos',
     icon: 'notifications',
   },
   {
     name: 'profile',
     label: 'Perfil',
-    caption: 'Tu PIN y tus datos',
     icon: 'person',
   },
 ]
