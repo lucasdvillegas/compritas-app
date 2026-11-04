@@ -12,8 +12,8 @@
             dense
             round
             icon="notifications"
-            :to="{ name: 'notifications' }"
             aria-label="Notificaciones"
+            @click="toggleRightDrawer"
           >
             <q-badge v-if="unreadCount > 0" color="negative" floating>
               {{ unreadCount > 9 ? '9+' : unreadCount }}
@@ -77,6 +77,95 @@
       </div>
     </q-drawer>
 
+    <q-drawer
+      v-model="rightDrawerOpen"
+      side="right"
+      overlay
+      bordered
+      :width="360"
+      class="bg-grey-1"
+    >
+      <div class="column fit">
+        <div class="row items-center justify-between q-pa-md">
+          <div>
+            <div class="text-overline text-uppercase text-grey-6">Notificaciones</div>
+            <div class="text-body2 text-grey-7 q-mt-xs">
+              {{ unreadCount > 0 ? `${unreadCount} sin leer` : 'Todo al día' }}
+            </div>
+          </div>
+
+          <q-btn
+            flat
+            dense
+            round
+            icon="close"
+            aria-label="Cerrar notificaciones"
+            @click="rightDrawerOpen = false"
+          />
+        </div>
+
+        <q-separator />
+
+        <div class="col" style="overflow-y: auto">
+          <div
+            v-if="loading && notifications.length === 0"
+            class="column items-center q-pa-xl text-grey-6"
+          >
+            <q-spinner color="primary" size="28px" />
+          </div>
+
+          <div
+            v-else-if="notifications.length === 0"
+            class="column items-center q-pa-xl text-center text-grey-6"
+          >
+            <q-icon name="notifications_none" size="40px" class="text-grey-4" />
+            <div class="text-body2 q-mt-sm">No tenés notificaciones</div>
+          </div>
+
+          <q-list v-else separator>
+            <q-item
+              v-for="notification in notifications"
+              :key="notification.id"
+              :class="{ 'bg-grey-2': !notification.read_at }"
+            >
+              <q-item-section avatar top>
+                <q-avatar
+                  :color="notification.read_at ? 'grey-2' : 'primary'"
+                  :text-color="notification.read_at ? 'grey-7' : 'white'"
+                  :icon="iconFor(notification)"
+                  size="32px"
+                />
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label :class="{ 'text-weight-medium': !notification.read_at }">
+                  {{ notification.message }}
+                </q-item-label>
+                <q-item-label caption>
+                  {{ formatDateTime(notification.created_at) }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+
+        <q-separator />
+
+        <div class="q-pa-md">
+          <q-btn
+            color="primary"
+            icon="history"
+            label="Ver historial de notificaciones"
+            unelevated
+            no-caps
+            class="full-width"
+            :to="{ name: 'notifications' }"
+            @click="rightDrawerOpen = false"
+          />
+        </div>
+      </div>
+    </q-drawer>
+
     <q-page-container class="bg-grey-1">
       <router-view />
     </q-page-container>
@@ -92,6 +181,7 @@ import { useListsStore } from '@/stores/listsStore'
 import { useNotificationsStore } from '@/stores/notificationsStore'
 import { useProfileStore } from '@/stores/profileStore'
 import { useRefreshOnFocus } from '@/composables/useRefreshOnFocus'
+import { formatDateTime } from '@/utils/dates'
 import mark from '@/assets/black-parade-mark.svg'
 
 const router = useRouter()
@@ -99,11 +189,22 @@ const authStore = useAuthStore()
 const listsStore = useListsStore()
 const notificationsStore = useNotificationsStore()
 const profileStore = useProfileStore()
-const { unreadCount } = storeToRefs(notificationsStore)
+const { unreadCount, notifications, loading } = storeToRefs(notificationsStore)
 const leftDrawerOpen = ref(false)
+const rightDrawerOpen = ref(false)
 
 onMounted(refreshUnreadCount)
-useRefreshOnFocus(refreshUnreadCount)
+useRefreshOnFocus(refreshOnFocus)
+
+function refreshOnFocus() {
+  if (rightDrawerOpen.value) {
+    loadNotificationsPreview()
+
+    return
+  }
+
+  refreshUnreadCount()
+}
 
 function refreshUnreadCount() {
   if (!authStore.isAuthenticated) {
@@ -111,6 +212,32 @@ function refreshUnreadCount() {
   }
 
   notificationsStore.fetchUnreadCount().catch(() => {})
+}
+
+function loadNotificationsPreview() {
+  notificationsStore.fetchNotifications().catch(() => {})
+  notificationsStore.fetchUnreadCount().catch(() => {})
+}
+
+function toggleRightDrawer() {
+  rightDrawerOpen.value = !rightDrawerOpen.value
+
+  if (rightDrawerOpen.value) {
+    leftDrawerOpen.value = false
+    loadNotificationsPreview()
+  }
+}
+
+function iconFor(notification) {
+  if (notification.type === 'list_invitation') {
+    return 'group_add'
+  }
+
+  if (notification.type === 'list_completed') {
+    return 'task_alt'
+  }
+
+  return 'notifications'
 }
 
 const links = [
@@ -140,11 +267,6 @@ const links = [
     icon: 'insights',
   },
   {
-    name: 'notifications',
-    label: 'Notificaciones',
-    icon: 'notifications',
-  },
-  {
     name: 'profile',
     label: 'Perfil',
     icon: 'person',
@@ -153,6 +275,10 @@ const links = [
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
+
+  if (leftDrawerOpen.value) {
+    rightDrawerOpen.value = false
+  }
 }
 
 function onLogout() {
