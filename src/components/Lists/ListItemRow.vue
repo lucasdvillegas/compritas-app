@@ -14,7 +14,7 @@
     <q-item-section>
       <q-item-label
         class="text-weight-medium"
-        :class="{ 'text-grey-5': item.checked }"
+        :class="{ 'app-text-subtle': item.checked }"
         :style="item.checked ? 'text-decoration: line-through' : ''"
       >
         {{ item.product_name }}
@@ -66,7 +66,7 @@
           @click="emit('weight', item)"
         />
 
-        <span v-else class="text-body2 text-weight-bold text-dark">
+        <span v-else class="text-body2 text-weight-bold app-text">
           {{ formatQuantity(item.quantity, item.unit) }}
         </span>
 
@@ -77,13 +77,13 @@
           no-caps
           size="sm"
           icon="sell"
-          :color="hasPrice ? 'primary' : 'grey-7'"
+          :color="hasPrice ? 'primary' : ($q.dark.isActive ? 'grey-3' : 'grey-7')"
           :label="priceLabel"
           :disable="saving"
           @click="emit('price', item)"
         />
 
-        <span v-else class="text-caption text-grey-7">{{ priceLabel }}</span>
+        <span v-else class="text-caption app-text-muted">{{ priceLabel }}</span>
       </div>
     </q-item-section>
 
@@ -92,7 +92,7 @@
         <span
           v-if="lineTotal !== null"
           class="text-body2 text-weight-bold text-no-wrap"
-          :class="item.checked ? 'text-grey-5' : 'text-dark'"
+          :class="item.checked ? 'app-text-subtle' : 'app-text'"
         >
           {{ formatMoney(lineTotal) }}
         </span>
@@ -114,8 +114,11 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useQuasar } from 'quasar'
 import { formatMoney } from '@/utils/money'
 import { formatQuantity, isWeightUnit, unitPriceSuffix } from '@/utils/units'
+
+const $q = useQuasar()
 
 const props = defineProps({
   item: {

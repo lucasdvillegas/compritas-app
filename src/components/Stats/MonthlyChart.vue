@@ -1,8 +1,8 @@
 <template>
   <q-card flat bordered class="fit">
     <q-card-section>
-      <div class="text-overline text-uppercase text-grey-6">Evolución mensual</div>
-      <div class="text-body2 text-grey-7 q-mt-xs">Gastos por mes en {{ year }}</div>
+      <div class="text-overline text-uppercase app-text-muted">Evolución mensual</div>
+      <div class="text-body2 app-text-muted q-mt-xs">Gastos por mes en {{ year }}</div>
     </q-card-section>
 
     <q-card-section class="q-pt-none">
@@ -15,6 +15,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useQuasar } from 'quasar'
 import { Bar } from 'vue-chartjs'
 import {
   BarElement,
@@ -28,6 +29,8 @@ import {
 import { formatMoney, formatMoneyCompact } from '@/utils/money'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
+const $q = useQuasar()
 
 const props = defineProps({
   months: {
@@ -48,20 +51,36 @@ function monthLabel(value) {
   return monthFormatter.format(new Date(year, month - 1, 1))
 }
 
+const chartColors = computed(() =>
+  $q.dark.isActive
+    ? {
+        bar: 'rgba(224, 90, 110, 0.85)',
+        barHover: 'rgba(224, 90, 110, 1)',
+        text: '#e8eaed',
+        grid: 'rgba(255, 255, 255, 0.08)',
+      }
+    : {
+        bar: 'rgba(165, 40, 53, 0.75)',
+        barHover: 'rgba(165, 40, 53, 0.95)',
+        text: '#5f6368',
+        grid: 'rgba(0, 0, 0, 0.06)',
+      },
+)
+
 const chartData = computed(() => ({
   labels: props.months.map((month) => monthLabel(month.month)),
   datasets: [
     {
       data: props.months.map((month) => month.total_spent),
-      backgroundColor: 'rgba(165, 40, 53, 0.75)',
-      hoverBackgroundColor: 'rgba(165, 40, 53, 0.95)',
+      backgroundColor: chartColors.value.bar,
+      hoverBackgroundColor: chartColors.value.barHover,
       borderRadius: 4,
       maxBarThickness: 36,
     },
   ],
 }))
 
-const chartOptions = {
+const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -78,9 +97,10 @@ const chartOptions = {
     y: {
       beginAtZero: true,
       grid: {
-        color: 'rgba(0, 0, 0, 0.06)',
+        color: chartColors.value.grid,
       },
       ticks: {
+        color: chartColors.value.text,
         callback: (value) => formatMoneyCompact(value),
       },
     },
@@ -88,7 +108,10 @@ const chartOptions = {
       grid: {
         display: false,
       },
+      ticks: {
+        color: chartColors.value.text,
+      },
     },
   },
-}
+}))
 </script>

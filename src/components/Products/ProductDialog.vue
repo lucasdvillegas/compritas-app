@@ -2,7 +2,7 @@
   <q-dialog ref="dialogRef" persistent @hide="onDialogHide">
     <q-card class="q-pa-xs" style="width: 460px; max-width: 92vw">
       <q-card-section class="row items-center justify-between">
-        <div class="font-display text-h6 text-weight-bold text-dark">
+        <div class="font-display text-h6 text-weight-bold app-text">
           {{ isEditing ? 'Editar producto' : 'Nuevo producto' }}
         </div>
 
@@ -41,15 +41,15 @@
             @update:model-value="serverError.category_id = ''"
           />
 
-          <div class="text-caption text-grey-7 q-mt-md q-mb-xs">Se vende</div>
+          <div class="text-caption app-text-muted q-mt-md q-mb-xs">Se vende</div>
 
           <q-btn-toggle
             v-model="form.unit"
             spread
             no-caps
             unelevated
-            color="grey-2"
-            text-color="grey-8"
+            :color="$q.dark.isActive ? 'grey-9' : 'grey-2'"
+            :text-color="$q.dark.isActive ? 'grey-2' : 'grey-8'"
             toggle-color="primary"
             :options="unitOptions"
             @update:model-value="serverError.unit = ''"

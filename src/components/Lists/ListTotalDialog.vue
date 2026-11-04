@@ -3,8 +3,8 @@
     <q-card class="q-pa-xs" style="width: 420px; max-width: 92vw">
       <q-card-section class="row items-center justify-between">
         <div style="min-width: 0">
-          <div class="font-display text-h6 text-weight-bold text-dark">Total de la lista</div>
-          <div class="text-caption text-grey-6 ellipsis">{{ list.name }}</div>
+          <div class="font-display text-h6 text-weight-bold app-text">Total de la lista</div>
+          <div class="text-caption app-text-muted ellipsis">{{ list.name }}</div>
         </div>
 
         <q-btn flat dense round icon="close" aria-label="Cerrar" @click="onDialogCancel" />
@@ -26,7 +26,7 @@
             @update:model-value="errorMessage = ''"
           />
 
-          <div class="text-caption text-grey-6 q-mt-sm">
+          <div class="text-caption app-text-muted q-mt-sm">
             Si no cargaste los precios de cada producto, podés anotar el gasto total acá.
           </div>
 

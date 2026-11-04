@@ -1,25 +1,25 @@
 <template>
-  <q-page class="bg-grey-1 q-pa-lg">
+  <q-page class="app-page q-pa-lg">
     <div class="page-shell">
-      <h1 class="font-display text-h4 text-weight-bold text-dark q-mt-xs q-mb-none">
+      <h1 class="font-display text-h4 text-weight-bold app-text q-mt-xs q-mb-none">
         Todas tus listas
       </h1>
-      <p class="text-body2 text-grey-7 q-mt-sm q-mb-none">
+      <p class="text-body2 app-text-muted q-mt-sm q-mb-none">
         Revisá las compras que ya completaste. Las listas cerradas no se pueden modificar.
       </p>
 
-      <div v-if="loading" class="column items-center q-pa-xl text-grey-6">
+      <div v-if="loading" class="column items-center q-pa-xl app-text-muted">
         <q-spinner color="primary" size="36px" />
         <div class="text-body2 q-mt-sm">Cargando historial...</div>
       </div>
 
       <q-card v-else-if="lists.length === 0" flat bordered class="q-mt-xl">
         <q-card-section>
-          <q-avatar color="grey-2" text-color="primary" icon="history" />
-          <div class="font-display text-h6 text-weight-bold text-dark q-mt-md">
+          <q-avatar class="app-avatar" icon="history" />
+          <div class="font-display text-h6 text-weight-bold app-text q-mt-md">
             Sin historial por ahora
           </div>
-          <div class="text-body2 text-grey-7 q-mt-xs">
+          <div class="text-body2 app-text-muted q-mt-xs">
             Cuando completes una lista va a quedar guardada acá con todos sus productos.
           </div>
           <q-btn
@@ -36,18 +36,18 @@
 
       <template v-else>
         <div class="row items-center justify-between q-mt-xl">
-          <div class="text-overline text-uppercase text-grey-6">Listas completadas</div>
-          <div class="text-caption text-grey-6">{{ lists.length }} en total</div>
+          <div class="text-overline text-uppercase app-text-muted">Listas completadas</div>
+          <div class="text-caption app-text-muted">{{ lists.length }} en total</div>
         </div>
 
         <q-card v-for="list in lists" :key="list.id" flat bordered class="q-mt-sm">
           <q-item clickable class="q-py-md" @click="openDetail(list)">
             <q-item-section avatar>
-              <q-avatar color="grey-2" text-color="primary" icon="task_alt" />
+              <q-avatar class="app-avatar" icon="task_alt" />
             </q-item-section>
 
             <q-item-section>
-              <q-item-label class="text-weight-bold text-dark">{{ list.name }}</q-item-label>
+              <q-item-label class="text-weight-bold app-text">{{ list.name }}</q-item-label>
               <q-item-label caption>
                 {{
                   list.completed_at ? `Completada el ${formatDate(list.completed_at)}` : 'Sin fecha'
@@ -74,7 +74,7 @@
                   :aria-label="`Eliminar ${list.name}`"
                   @click.stop="confirmDelete(list)"
                 />
-                <q-icon name="chevron_right" class="text-grey-5" />
+                <q-icon name="chevron_right" class="app-text-subtle" />
               </div>
             </q-item-section>
           </q-item>

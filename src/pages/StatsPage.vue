@@ -1,12 +1,12 @@
 <template>
-  <q-page class="bg-grey-1 q-pa-lg">
+  <q-page class="app-page q-pa-lg">
     <div class="page-shell">
       <div class="row items-center justify-between q-gutter-y-md">
         <div>
-          <h1 class="font-display text-h4 text-weight-bold text-dark q-mt-xs q-mb-none">
+          <h1 class="font-display text-h4 text-weight-bold app-text q-mt-xs q-mb-none">
             Tus gastos, en perspectiva
           </h1>
-          <p class="text-body2 text-grey-7 q-mt-sm q-mb-none">
+          <p class="text-body2 app-text-muted q-mt-sm q-mb-none">
             Mirá cuánto gastaste, en qué categorías y qué productos comprás más seguido.
           </p>
         </div>
@@ -29,21 +29,22 @@
         v-if="loading && summary"
         indeterminate
         color="primary"
+        :track-color="$q.dark.isActive ? 'grey-9' : 'grey-3'"
         class="q-mt-lg"
       />
 
-      <div v-if="loading && !summary" class="column items-center q-pa-xl text-grey-6">
+      <div v-if="loading && !summary" class="column items-center q-pa-xl app-text-muted">
         <q-spinner color="primary" size="36px" />
         <div class="text-body2 q-mt-sm">Cargando estadísticas...</div>
       </div>
 
       <q-card v-else-if="summary && summary.lists_count === 0" flat bordered class="q-mt-xl">
         <q-card-section class="column items-center text-center q-pa-xl">
-          <q-icon name="insights" size="44px" class="text-grey-4" />
-          <div class="font-display text-h6 text-weight-bold text-dark q-mt-md">
+          <q-icon name="insights" size="44px" class="app-text-subtle" />
+          <div class="font-display text-h6 text-weight-bold app-text q-mt-md">
             Todavía no hay datos para {{ selectedYear }}
           </div>
-          <div class="text-body2 text-grey-7 q-mt-xs">
+          <div class="text-body2 app-text-muted q-mt-xs">
             Completá una lista para ver tus gastos y estadísticas.
           </div>
           <q-btn

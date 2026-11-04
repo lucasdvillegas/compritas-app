@@ -1,13 +1,13 @@
 <template>
-  <q-page class="bg-grey-1 q-pa-lg">
+  <q-page class="app-page q-pa-lg">
     <div class="page-shell">
       <div class="row items-center justify-between q-gutter-y-md">
         <div>
-          <h1 class="font-display text-h4 text-weight-bold text-dark q-mt-xs q-mb-none">
+          <h1 class="font-display text-h4 text-weight-bold app-text q-mt-xs q-mb-none">
             El catálogo de la banda
           </h1>
 
-          <p class="text-body2 text-grey-7 q-mt-sm q-mb-none">
+          <p class="text-body2 app-text-muted q-mt-sm q-mb-none">
             Cargá y organizá los productos que después vas a sumar a tu lista.
           </p>
         </div>

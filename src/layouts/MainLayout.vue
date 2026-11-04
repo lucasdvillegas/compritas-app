@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-grey-1 text-dark">
+    <q-header class="app-surface app-text">
       <q-toolbar class="q-py-sm">
         <q-btn flat dense round icon="menu" aria-label="Abrir menú" @click="toggleLeftDrawer" />
 
@@ -20,14 +20,14 @@
             </q-badge>
           </q-btn>
 
-          <span class="text-body2 text-grey-7 gt-xs">
+          <span class="text-body2 app-text-muted gt-xs">
             {{ authStore.user?.name ?? 'Tu cuenta' }}
           </span>
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="286" class="bg-grey-1">
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="286" class="app-surface">
       <div class="column justify-between fit q-pa-md">
         <div>
           <div class="row items-center no-wrap q-gutter-x-sm q-px-sm q-pt-sm q-pb-lg">
@@ -35,7 +35,7 @@
               <img :src="mark" alt="" aria-hidden="true" />
             </q-avatar>
             <div>
-              <div class="text-overline text-uppercase text-grey-6">Compritapp</div>
+              <div class="text-overline text-uppercase app-text-muted">Compritapp</div>
             </div>
           </div>
 
@@ -47,7 +47,7 @@
               clickable
               exact
               class="rounded-borders q-py-sm"
-              active-class="bg-grey-2 text-primary"
+              active-class="app-surface-muted text-primary"
             >
               <q-item-section avatar>
                 <q-icon :name="link.icon" size="20px" />
@@ -83,13 +83,13 @@
       overlay
       bordered
       :width="360"
-      class="bg-grey-1"
+      class="app-surface"
     >
       <div class="column fit">
         <div class="row items-center justify-between q-pa-md">
           <div>
-            <div class="text-overline text-uppercase text-grey-6">Notificaciones</div>
-            <div class="text-body2 text-grey-7 q-mt-xs">
+            <div class="text-overline text-uppercase app-text-muted">Notificaciones</div>
+            <div class="text-body2 app-text-muted q-mt-xs">
               {{ unreadCount > 0 ? `${unreadCount} sin leer` : 'Todo al día' }}
             </div>
           </div>
@@ -109,16 +109,16 @@
         <div class="col" style="overflow-y: auto">
           <div
             v-if="loading && notifications.length === 0"
-            class="column items-center q-pa-xl text-grey-6"
+            class="column items-center q-pa-xl app-text-muted"
           >
             <q-spinner color="primary" size="28px" />
           </div>
 
           <div
             v-else-if="notifications.length === 0"
-            class="column items-center q-pa-xl text-center text-grey-6"
+            class="column items-center q-pa-xl text-center app-text-muted"
           >
-            <q-icon name="notifications_none" size="40px" class="text-grey-4" />
+            <q-icon name="notifications_none" size="40px" class="app-text-subtle" />
             <div class="text-body2 q-mt-sm">No tenés notificaciones</div>
           </div>
 
@@ -126,12 +126,13 @@
             <q-item
               v-for="notification in notifications"
               :key="notification.id"
-              :class="{ 'bg-grey-2': !notification.read_at }"
+              :class="{ 'app-surface-muted': !notification.read_at }"
             >
               <q-item-section avatar top>
                 <q-avatar
-                  :color="notification.read_at ? 'grey-2' : 'primary'"
-                  :text-color="notification.read_at ? 'grey-7' : 'white'"
+                  :class="{ 'app-avatar': notification.read_at }"
+                  :color="notification.read_at ? undefined : 'primary'"
+                  :text-color="notification.read_at ? undefined : 'white'"
                   :icon="iconFor(notification)"
                   size="32px"
                 />
@@ -166,7 +167,7 @@
       </div>
     </q-drawer>
 
-    <q-page-container class="bg-grey-1">
+    <q-page-container class="app-page">
       <router-view />
     </q-page-container>
   </q-layout>

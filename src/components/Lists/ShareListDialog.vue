@@ -10,8 +10,8 @@
     >
       <q-card-section class="row items-start justify-between no-wrap">
         <div style="min-width: 0">
-          <div class="font-display text-h6 text-weight-bold text-dark">Compartir lista</div>
-          <div class="text-caption text-grey-6 ellipsis">{{ list.name }}</div>
+          <div class="font-display text-h6 text-weight-bold app-text">Compartir lista</div>
+          <div class="text-caption app-text-muted ellipsis">{{ list.name }}</div>
         </div>
 
         <q-btn flat dense round icon="close" aria-label="Cerrar" @click="onDialogCancel" />
@@ -38,7 +38,7 @@
             </template>
           </q-input>
 
-          <div class="text-caption text-grey-6 q-mt-sm">
+          <div class="text-caption app-text-muted q-mt-sm">
             Pedile su PIN de 8 dígitos a la persona que querés agregar.
           </div>
 
@@ -57,24 +57,24 @@
 
         <q-separator class="q-my-lg" />
 
-        <div class="text-overline text-uppercase text-grey-6">Miembros</div>
+        <div class="text-overline text-uppercase app-text-muted">Miembros</div>
 
-        <div v-if="loadingMembers" class="column items-center q-pa-lg text-grey-6">
+        <div v-if="loadingMembers" class="column items-center q-pa-lg app-text-muted">
           <q-spinner color="primary" size="28px" />
         </div>
 
         <q-list v-else separator>
           <q-item v-for="member in members" :key="member.id">
             <q-item-section avatar>
-              <q-avatar color="grey-2" text-color="primary" size="36px">
+              <q-avatar class="app-avatar" size="36px">
                 {{ initials(member.name) }}
               </q-avatar>
             </q-item-section>
 
             <q-item-section>
-              <q-item-label class="text-weight-medium text-dark">
+              <q-item-label class="text-weight-medium app-text">
                 {{ member.name }}
-                <q-badge v-if="member.role === 'owner'" color="grey-3" text-color="grey-8" class="q-ml-xs">
+                <q-badge v-if="member.role === 'owner'" class="app-chip q-ml-xs">
                   Dueño
                 </q-badge>
               </q-item-label>
@@ -98,12 +98,12 @@
         <template v-if="invitations.length > 0">
           <q-separator class="q-my-lg" />
 
-          <div class="text-overline text-uppercase text-grey-6">Invitaciones pendientes</div>
+          <div class="text-overline text-uppercase app-text-muted">Invitaciones pendientes</div>
 
           <q-list separator>
             <q-item v-for="invitation in invitations" :key="invitation.id">
               <q-item-section>
-                <q-item-label class="text-weight-medium text-dark">
+                <q-item-label class="text-weight-medium app-text">
                   {{ invitation.invitee?.name ?? 'Invitado' }}
                 </q-item-label>
                 <q-item-label caption>Esperando respuesta</q-item-label>

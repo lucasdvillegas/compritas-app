@@ -1,12 +1,12 @@
 <template>
-  <q-page class="bg-grey-1 q-pa-lg">
+  <q-page class="app-page q-pa-lg">
     <div class="page-shell">
       <div class="row items-center justify-between q-gutter-y-md">
         <div>
-          <h1 class="font-display text-h4 text-weight-bold text-dark q-mt-xs q-mb-none">
+          <h1 class="font-display text-h4 text-weight-bold app-text q-mt-xs q-mb-none">
             Tu compra, sin vueltas
           </h1>
-          <p class="text-body2 text-grey-7 q-mt-sm q-mb-none">
+          <p class="text-body2 app-text-muted q-mt-sm q-mb-none">
             Organizá tus compras en listas separadas y sumá productos desde tu catálogo.
           </p>
         </div>
@@ -22,18 +22,18 @@
         />
       </div>
 
-      <div v-if="loading && lists.length === 0" class="column items-center q-pa-xl text-grey-6">
+      <div v-if="loading && lists.length === 0" class="column items-center q-pa-xl app-text-muted">
         <q-spinner color="primary" size="36px" />
         <div class="text-body2 q-mt-sm">Cargando tus listas...</div>
       </div>
 
       <q-card v-else-if="lists.length === 0" flat bordered class="q-mt-xl">
         <q-card-section>
-          <q-avatar color="grey-2" text-color="primary" icon="playlist_add_check" />
-          <div class="font-display text-h6 text-weight-bold text-dark q-mt-md">
+          <q-avatar class="app-avatar" icon="playlist_add_check" />
+          <div class="font-display text-h6 text-weight-bold app-text q-mt-md">
             Todavía no tenés listas abiertas
           </div>
-          <div class="text-body2 text-grey-7 q-mt-xs">
+          <div class="text-body2 app-text-muted q-mt-xs">
             Creá tu primera lista y empezá a agregar productos. Podés tener varias listas abiertas
             al mismo tiempo.
           </div>
@@ -52,8 +52,8 @@
 
       <template v-else>
         <div class="row items-center justify-between q-mt-xl">
-          <div class="text-overline text-uppercase text-grey-6">Listas abiertas</div>
-          <div class="text-caption text-grey-6">{{ lists.length }} en curso</div>
+          <div class="text-overline text-uppercase app-text-muted">Listas abiertas</div>
+          <div class="text-caption app-text-muted">{{ lists.length }} en curso</div>
         </div>
 
         <div class="row no-wrap q-gutter-x-sm q-mt-sm list-switcher">
@@ -64,7 +64,7 @@
             rounded
             unelevated
             :outline="!isActive(list)"
-            :color="isActive(list) ? 'primary' : 'grey-8'"
+            :color="isActive(list) ? 'primary' : ($q.dark.isActive ? 'grey-3' : 'grey-8')"
             :disable="loadingList"
             class="list-switcher__button"
             @click="selectList(list)"
@@ -72,8 +72,8 @@
             <span class="ellipsis" style="max-width: 170px">{{ list.name }}</span>
             <q-badge
               class="q-ml-sm"
-              :color="isActive(list) ? 'white' : 'grey-3'"
-              :text-color="isActive(list) ? 'primary' : 'grey-8'"
+              :color="isActive(list) ? 'white' : ($q.dark.isActive ? 'grey-9' : 'grey-3')"
+              :text-color="isActive(list) ? 'primary' : ($q.dark.isActive ? 'grey-2' : 'grey-8')"
             >
               {{ list.checked_items_count }}/{{ list.items_count }}
             </q-badge>
@@ -81,7 +81,7 @@
         </div>
 
         <q-card v-if="loadingList && !activeList" flat bordered class="q-mt-md">
-          <q-card-section class="column items-center q-pa-xl text-grey-6">
+          <q-card-section class="column items-center q-pa-xl app-text-muted">
             <q-spinner color="primary" size="32px" />
             <div class="text-body2 q-mt-sm">Cargando lista...</div>
           </q-card-section>
@@ -89,9 +89,9 @@
 
         <q-card v-else-if="!activeList" flat bordered class="q-mt-md">
           <q-card-section class="text-center q-pa-xl">
-            <q-icon name="touch_app" size="40px" class="text-grey-4" />
-            <div class="text-body1 text-weight-medium text-dark q-mt-sm">Elegí una lista</div>
-            <div class="text-body2 text-grey-6 q-mt-xs">
+            <q-icon name="touch_app" size="40px" class="app-text-subtle" />
+            <div class="text-body1 text-weight-medium app-text q-mt-sm">Elegí una lista</div>
+            <div class="text-body2 app-text-muted q-mt-xs">
               Seleccioná una de las listas abiertas para ver sus productos.
             </div>
           </q-card-section>
@@ -101,19 +101,19 @@
           <q-card-section>
             <div class="row items-start justify-between no-wrap q-gutter-x-md">
               <div class="col">
-                <div class="text-overline text-uppercase text-grey-6">Lista activa</div>
-                <div class="font-display text-h5 text-weight-bold text-dark q-mt-xs">
+                <div class="text-overline text-uppercase app-text-muted">Lista activa</div>
+                <div class="font-display text-h5 text-weight-bold app-text q-mt-xs">
                   {{ activeList?.name }}
                 </div>
-                <div class="text-body2 text-grey-7 q-mt-xs">
+                <div class="text-body2 app-text-muted q-mt-xs">
                   {{ activeCheckedCount }} de
                   {{ pluralize(activeItems.length, 'producto marcado', 'productos marcados') }}
                 </div>
-                <div class="text-caption text-grey-6 q-mt-xs">
+                <div class="text-caption app-text-muted q-mt-xs">
                   Deslizá a la derecha para marcar y a la izquierda para desmarcar.
                 </div>
 
-                <div v-if="activeList?.members_count > 0" class="text-caption text-grey-6 q-mt-xs">
+                <div v-if="activeList?.members_count > 0" class="text-caption app-text-muted q-mt-xs">
                   {{ pluralize(activeList.members_count, 'miembro', 'miembros') }}
                 </div>
 
@@ -126,12 +126,12 @@
                     size="20px"
                     :color="activeTotal > 0 ? 'primary' : 'grey-5'"
                   />
-                  <div class="text-body1 text-weight-bold text-dark">
+                  <div class="text-body1 text-weight-bold app-text">
                     {{ formatMoney(activeTotal) }}
                   </div>
 
                   <template v-if="activeManualTotal !== null">
-                    <q-badge color="grey-3" text-color="grey-8">Total manual</q-badge>
+                    <q-badge class="app-chip">Total manual</q-badge>
                     <q-btn
                       flat
                       dense
@@ -145,7 +145,7 @@
                   </template>
 
                   <template v-else>
-                    <div v-if="activeUnpricedCount > 0" class="text-caption text-grey-6">
+                    <div v-if="activeUnpricedCount > 0" class="text-caption app-text-muted">
                       · {{ activeUnpricedCount }} sin precio
                     </div>
 
@@ -220,7 +220,7 @@
               rounded
               size="8px"
               color="primary"
-              track-color="grey-3"
+              :track-color="$q.dark.isActive ? 'grey-9' : 'grey-3'"
               class="q-mt-md"
             />
 
@@ -250,15 +250,15 @@
 
           <q-separator />
 
-          <div v-if="loadingList" class="column items-center q-pa-xl text-grey-6">
+          <div v-if="loadingList" class="column items-center q-pa-xl app-text-muted">
             <q-spinner color="primary" size="32px" />
             <div class="text-body2 q-mt-sm">Cargando lista...</div>
           </div>
 
           <q-card-section v-else-if="activeItems.length === 0" class="text-center q-pa-xl">
-            <q-icon name="shopping_basket" size="44px" class="text-grey-4" />
-            <div class="text-body1 text-weight-medium text-dark q-mt-sm">Esta lista está vacía</div>
-            <div class="text-body2 text-grey-6 q-mt-xs">
+            <q-icon name="shopping_basket" size="44px" class="app-text-subtle" />
+            <div class="text-body1 text-weight-medium app-text q-mt-sm">Esta lista está vacía</div>
+            <div class="text-body2 app-text-muted q-mt-xs">
               Sumá productos desde tu catálogo. Después podés marcarlos desde la lista.
             </div>
             <q-btn
@@ -277,7 +277,7 @@
               v-for="item in activeItems"
               :key="item.id"
               left-color="positive"
-              right-color="grey-7"
+              :right-color="$q.dark.isActive ? 'grey-9' : 'grey-7'"
               @left="({ reset }) => markItem(item, reset)"
               @right="({ reset }) => unmarkItem(item, reset)"
             >

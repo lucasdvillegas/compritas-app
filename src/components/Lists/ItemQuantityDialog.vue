@@ -3,8 +3,8 @@
     <q-card class="q-pa-xs" style="width: 420px; max-width: 92vw">
       <q-card-section class="row items-center justify-between">
         <div style="min-width: 0">
-          <div class="font-display text-h6 text-weight-bold text-dark">Peso del producto</div>
-          <div class="text-caption text-grey-6 ellipsis">{{ item.product_name }}</div>
+          <div class="font-display text-h6 text-weight-bold app-text">Peso del producto</div>
+          <div class="text-caption app-text-muted ellipsis">{{ item.product_name }}</div>
         </div>
 
         <q-btn flat dense round icon="close" aria-label="Cerrar" @click="onDialogCancel" />
@@ -26,7 +26,7 @@
             @update:model-value="errorMessage = ''"
           />
 
-          <div class="text-caption text-grey-6 q-mt-sm">
+          <div class="text-caption app-text-muted q-mt-sm">
             Ingresá el peso que vas a comprar. Por ejemplo, 0,75 para tres cuartos de kilo.
           </div>
 

@@ -1,12 +1,12 @@
 <template>
-  <q-page class="bg-grey-1 q-pa-lg">
+  <q-page class="app-page q-pa-lg">
     <div class="page-shell">
       <div class="row items-center justify-between q-gutter-y-md">
         <div>
-          <h1 class="font-display text-h4 text-weight-bold text-dark q-mt-xs q-mb-none">
+          <h1 class="font-display text-h4 text-weight-bold app-text q-mt-xs q-mb-none">
             Lo que pasó en tus listas
           </h1>
-          <p class="text-body2 text-grey-7 q-mt-sm q-mb-none">
+          <p class="text-body2 app-text-muted q-mt-sm q-mb-none">
             Invitaciones para compartir listas y compras completadas.
           </p>
         </div>
@@ -28,8 +28,8 @@
           :options="filterOptions"
           unelevated
           no-caps
-          color="grey-2"
-          text-color="grey-8"
+          :color="$q.dark.isActive ? 'grey-9' : 'grey-2'"
+          :text-color="$q.dark.isActive ? 'grey-2' : 'grey-8'"
           toggle-color="primary"
           @update:model-value="loadNotifications"
         />
@@ -39,18 +39,18 @@
         </q-badge>
       </div>
 
-      <div v-if="loading && notifications.length === 0" class="column items-center q-pa-xl text-grey-6">
+      <div v-if="loading && notifications.length === 0" class="column items-center q-pa-xl app-text-muted">
         <q-spinner color="primary" size="36px" />
         <div class="text-body2 q-mt-sm">Cargando notificaciones...</div>
       </div>
 
       <q-card v-else-if="notifications.length === 0" flat bordered class="q-mt-lg">
         <q-card-section class="column items-center text-center q-pa-xl">
-          <q-icon name="notifications_none" size="44px" class="text-grey-4" />
-          <div class="font-display text-h6 text-weight-bold text-dark q-mt-md">
+          <q-icon name="notifications_none" size="44px" class="app-text-subtle" />
+          <div class="font-display text-h6 text-weight-bold app-text q-mt-md">
             No tenés notificaciones
           </div>
-          <div class="text-body2 text-grey-7 q-mt-xs">
+          <div class="text-body2 app-text-muted q-mt-xs">
             Cuando te inviten a una lista o se complete una compra, vas a verlo acá.
           </div>
         </q-card-section>
@@ -60,12 +60,13 @@
         <q-item
           v-for="notification in notifications"
           :key="notification.id"
-          :class="{ 'bg-grey-2': !notification.read_at }"
+          :class="{ 'app-surface-muted': !notification.read_at }"
         >
           <q-item-section avatar top>
             <q-avatar
-              :color="notification.read_at ? 'grey-2' : 'primary'"
-              :text-color="notification.read_at ? 'grey-7' : 'white'"
+              :class="{ 'app-avatar': notification.read_at }"
+              :color="notification.read_at ? undefined : 'primary'"
+              :text-color="notification.read_at ? undefined : 'white'"
               :icon="iconFor(notification)"
               size="36px"
             />
@@ -104,7 +105,7 @@
                 />
               </template>
 
-              <q-badge v-else color="grey-3" text-color="grey-8">
+              <q-badge v-else class="app-chip">
                 {{ invitationStatusLabel(notification.data.invitation_status) }}
               </q-badge>
             </div>

@@ -1,18 +1,18 @@
 <template>
   <q-card flat bordered>
     <q-card-section>
-      <div class="text-overline text-uppercase text-grey-6">Productos más comprados</div>
-      <div class="text-body2 text-grey-7 q-mt-xs">Ranking por cantidad de compras.</div>
+      <div class="text-overline text-uppercase app-text-muted">Productos más comprados</div>
+      <div class="text-body2 app-text-muted q-mt-xs">Ranking por cantidad de compras.</div>
     </q-card-section>
 
     <q-list v-if="products.length > 0" separator>
       <q-item v-for="product in products" :key="product.product_id ?? product.product_name">
         <q-item-section avatar top>
-          <q-avatar color="grey-2" text-color="primary" icon="inventory_2" size="36px" />
+          <q-avatar class="app-avatar" icon="inventory_2" size="36px" />
         </q-item-section>
 
         <q-item-section>
-          <q-item-label class="text-weight-medium text-dark ellipsis">
+          <q-item-label class="text-weight-medium app-text ellipsis">
             {{ product.product_name }}
           </q-item-label>
 
@@ -33,8 +33,8 @@
       </q-item>
     </q-list>
 
-    <q-card-section v-else class="column items-center q-py-lg text-grey-6">
-      <q-icon name="shopping_bag" size="36px" class="text-grey-4" />
+    <q-card-section v-else class="column items-center q-py-lg app-text-muted">
+      <q-icon name="shopping_bag" size="36px" class="app-text-subtle" />
       <div class="text-body2 q-mt-sm">Todavía no hay productos comprados</div>
     </q-card-section>
   </q-card>

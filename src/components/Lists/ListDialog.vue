@@ -2,7 +2,7 @@
   <q-dialog ref="dialogRef" persistent @hide="onDialogHide">
     <q-card class="q-pa-xs" style="width: 420px; max-width: 92vw">
       <q-card-section class="row items-center justify-between">
-        <div class="font-display text-h6 text-weight-bold text-dark">
+        <div class="font-display text-h6 text-weight-bold app-text">
           {{ isEditing ? 'Renombrar lista' : 'Nueva lista' }}
         </div>
 

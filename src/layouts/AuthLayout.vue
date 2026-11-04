@@ -44,7 +44,7 @@ import poster from '../assets/drum-major.jpg'
 <style lang="scss" scoped>
 .auth-layout {
   min-height: 100vh;
-  background: #faf8f4;
+  background: #ffffff;
 }
 
 .auth-layout__grid {
@@ -244,12 +244,12 @@ import poster from '../assets/drum-major.jpg'
 }
 
 :deep(.auth-form .q-field--outlined .q-field__control::before) {
-  border-color: #e4dfd6;
+  border-color: #e5e7eb;
   border-radius: 8px;
 }
 
 :deep(.auth-form .q-field--outlined:not(.q-field--highlighted) .q-field__control:hover::before) {
-  border-color: #cfc7bb;
+  border-color: #d1d5db;
 }
 
 :deep(.auth-form .q-field--outlined .q-field__control::after) {
@@ -296,7 +296,7 @@ import poster from '../assets/drum-major.jpg'
   height: 44px;
   border-radius: 8px;
   background: #171412;
-  color: #faf8f4;
+  color: #ffffff;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;

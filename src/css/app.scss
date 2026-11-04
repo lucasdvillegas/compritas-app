@@ -1,6 +1,38 @@
 // app global css
 
-// Únicos helpers propios: lo que Quasar no expone como utility.
+// Paleta semántica: las superficies base son blancas en el tema claro.
+:root {
+  --app-bg: #ffffff;
+  --app-surface: #ffffff;
+  --app-surface-muted: #f4f4f5;
+  --app-text: #171412;
+  --app-text-muted: #5f6368;
+  --app-text-subtle: #8a8f94;
+  --app-border: #e5e7eb;
+  --app-track: #e5e7eb;
+  --app-chip-bg: #f2f3f5;
+  --app-chip-text: #3c4043;
+}
+
+body.body--dark {
+  --app-bg: #121212;
+  --app-surface: #1a1a1a;
+  --app-surface-muted: #242424;
+  --app-text: #f4f1ea;
+  --app-text-muted: #b8b8b8;
+  --app-text-subtle: #8a8f94;
+  --app-border: #2f2f2f;
+  --app-track: #333333;
+  --app-chip-bg: #2a2a2a;
+  --app-chip-text: #e8eaed;
+  --q-primary: #e05a6e;
+}
+
+body {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
 .page-shell {
   width: 100%;
   max-width: 1080px;
@@ -14,4 +46,112 @@
 
 .tracked {
   letter-spacing: 0.2em;
+}
+
+.app-page {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+.app-surface {
+  background: var(--app-surface);
+  color: var(--app-text);
+}
+
+.app-surface-muted {
+  background: var(--app-surface-muted) !important;
+}
+
+.app-text {
+  color: var(--app-text) !important;
+}
+
+.app-text-muted {
+  color: var(--app-text-muted) !important;
+}
+
+.app-text-subtle {
+  color: var(--app-text-subtle) !important;
+}
+
+.app-chip {
+  background: var(--app-chip-bg) !important;
+  color: var(--app-chip-text) !important;
+}
+
+.app-avatar {
+  background: var(--app-chip-bg) !important;
+  color: var(--q-primary) !important;
+}
+
+.app-progress .q-linear-progress__track {
+  background: var(--app-track) !important;
+  opacity: 1 !important;
+}
+
+// Modals: sin sombra, con borde y esquinas redondeadas.
+.q-dialog .q-card {
+  border: 1px solid var(--app-border) !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+// Desplegables de selects/menús: sin sombra, con borde y esquinas redondeadas.
+.q-menu {
+  border: 1px solid var(--app-border) !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+body.body--dark .q-card,
+body.body--dark .q-menu,
+body.body--dark .q-table__card,
+body.body--dark .q-dialog .q-card {
+  background: var(--app-surface) !important;
+  color: var(--app-text) !important;
+}
+
+body.body--dark .q-table th,
+body.body--dark .q-table td {
+  border-color: var(--app-border) !important;
+  color: var(--app-text) !important;
+}
+
+body.body--dark .q-table th {
+  color: var(--app-text-muted) !important;
+}
+
+body.body--dark .q-field__label,
+body.body--dark .q-field__bottom,
+body.body--dark .q-field__marginal {
+  color: var(--app-text-muted) !important;
+}
+
+body.body--dark .q-field__native,
+body.body--dark .q-field__prefix,
+body.body--dark .q-field__suffix,
+body.body--dark .q-field__input {
+  color: var(--app-text) !important;
+}
+
+body.body--dark .q-field--outlined .q-field__control:before {
+  border-color: var(--app-border) !important;
+}
+
+body.body--dark .q-field--outlined .q-field__control:hover:before {
+  border-color: var(--app-text-muted) !important;
+}
+
+body.body--dark .q-card--bordered,
+body.body--dark .q-table--bordered,
+body.body--dark .q-drawer--bordered {
+  border-color: var(--app-border) !important;
+}
+
+body.body--dark .q-separator {
+  background: var(--app-border);
+}
+
+body.body--dark .q-table {
+  color: var(--app-text);
 }

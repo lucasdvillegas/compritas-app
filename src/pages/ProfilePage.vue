@@ -1,14 +1,14 @@
 <template>
-  <q-page class="bg-grey-1 q-pa-lg">
+  <q-page class="app-page q-pa-lg">
     <div class="page-shell">
-      <h1 class="font-display text-h4 text-weight-bold text-dark q-mt-xs q-mb-none">
+      <h1 class="font-display text-h4 text-weight-bold app-text q-mt-xs q-mb-none">
         Tu cuenta
       </h1>
-      <p class="text-body2 text-grey-7 q-mt-sm q-mb-none">
+      <p class="text-body2 app-text-muted q-mt-sm q-mb-none">
         Gestioná tus datos y compartí tu PIN para que te agreguen a una lista.
       </p>
 
-      <div v-if="loading && !user" class="column items-center q-pa-xl text-grey-6">
+      <div v-if="loading && !user" class="column items-center q-pa-xl app-text-muted">
         <q-spinner color="primary" size="36px" />
         <div class="text-body2 q-mt-sm">Cargando perfil...</div>
       </div>
@@ -16,20 +16,20 @@
       <template v-else>
         <q-card flat bordered class="q-mt-xl">
           <q-card-section>
-            <div class="text-overline text-uppercase text-grey-6">Datos</div>
-            <div class="font-display text-h6 text-weight-bold text-dark q-mt-xs">
+            <div class="text-overline text-uppercase app-text-muted">Datos</div>
+            <div class="font-display text-h6 text-weight-bold app-text q-mt-xs">
               {{ user?.name }}
             </div>
-            <div class="text-body2 text-grey-7 q-mt-xs">{{ user?.email }}</div>
+            <div class="text-body2 app-text-muted q-mt-xs">{{ user?.email }}</div>
           </q-card-section>
         </q-card>
 
         <q-card flat bordered class="q-mt-lg">
           <q-card-section>
-            <div class="text-overline text-uppercase text-grey-6">Tu PIN para compartir</div>
+            <div class="text-overline text-uppercase app-text-muted">Tu PIN para compartir</div>
 
             <div class="row items-center q-gutter-sm q-mt-sm">
-              <div class="font-display text-h3 text-weight-bold text-dark pin-display">
+              <div class="font-display text-h3 text-weight-bold app-text pin-display">
                 {{ formattedPin }}
               </div>
               <q-btn
@@ -43,7 +43,7 @@
               />
             </div>
 
-            <div class="text-body2 text-grey-7 q-mt-sm">
+            <div class="text-body2 app-text-muted q-mt-sm">
               Compartí este PIN con el dueño de una lista para que te agregue. No lo compartas con
               cualquiera.
             </div>
@@ -57,6 +57,20 @@
               no-caps
               @click="confirmRegenerate"
             />
+          </q-card-section>
+        </q-card>
+
+        <q-card flat bordered class="q-mt-lg">
+          <q-card-section class="row items-center justify-between q-gutter-x-md">
+            <div>
+              <div class="text-overline text-uppercase app-text-muted">Apariencia</div>
+              <div class="text-body1 text-weight-medium app-text q-mt-xs">Modo oscuro</div>
+              <div class="text-body2 app-text-muted q-mt-xs">
+                Invierte la paleta de colores de la app.
+              </div>
+            </div>
+
+            <q-toggle v-model="isDark" color="primary" aria-label="Modo oscuro" />
           </q-card-section>
         </q-card>
       </template>
@@ -75,6 +89,14 @@ const profileStore = useProfileStore()
 const { user, pin, loading } = storeToRefs(profileStore)
 
 const formattedPin = computed(() => (pin.value ? `${pin.value.slice(0, 4)} ${pin.value.slice(4)}` : ''))
+
+const isDark = computed({
+  get: () => $q.dark.isActive,
+  set: (value) => {
+    $q.dark.set(value)
+    localStorage.setItem('theme', value ? 'dark' : 'light')
+  },
+})
 
 onMounted(fetchProfile)
 

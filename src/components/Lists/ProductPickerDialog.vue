@@ -10,8 +10,8 @@
     >
       <q-card-section class="row items-start justify-between no-wrap">
         <div style="min-width: 0">
-          <div class="font-display text-h6 text-weight-bold text-dark">Agregar productos</div>
-          <div class="text-caption text-grey-6 ellipsis">{{ list.name }}</div>
+          <div class="font-display text-h6 text-weight-bold app-text">Agregar productos</div>
+          <div class="text-caption app-text-muted ellipsis">{{ list.name }}</div>
         </div>
 
         <q-btn flat dense round icon="close" aria-label="Cerrar" @click="onDialogCancel" />
@@ -32,7 +32,7 @@
         </q-input>
 
         <div class="row items-center justify-between q-mt-sm">
-          <div class="text-caption text-grey-6">
+          <div class="text-caption app-text-muted">
             {{ inListCount }} en la lista · {{ products.length }} productos
           </div>
 
@@ -51,17 +51,17 @@
       <q-separator />
 
       <q-card-section class="col q-pa-none" style="overflow-y: auto">
-        <div v-if="loading" class="column items-center q-pa-xl text-grey-6">
+        <div v-if="loading" class="column items-center q-pa-xl app-text-muted">
           <q-spinner color="primary" size="32px" />
           <div class="text-body2 q-mt-sm">Cargando productos...</div>
         </div>
 
         <div v-else-if="filteredProducts.length === 0" class="q-pa-xl text-center">
-          <q-icon name="inventory_2" size="40px" class="text-grey-4" />
-          <div class="text-body1 text-weight-medium text-dark q-mt-sm">
+          <q-icon name="inventory_2" size="40px" class="app-text-subtle" />
+          <div class="text-body1 text-weight-medium app-text q-mt-sm">
             {{ products.length === 0 ? 'Tu catálogo está vacío' : 'No encontramos productos' }}
           </div>
-          <div class="text-body2 text-grey-6 q-mt-xs">
+          <div class="text-body2 app-text-muted q-mt-xs">
             {{
               products.length === 0
                 ? 'Creá tu primer producto para sumarlo a la lista.'
@@ -75,7 +75,7 @@
             v-for="product in filteredProducts"
             :key="product.id"
             left-color="positive"
-            right-color="grey-7"
+            :right-color="$q.dark.isActive ? 'grey-9' : 'grey-7'"
             @left="({ reset }) => addProduct(product, reset)"
             @right="({ reset }) => removeProduct(product, reset)"
           >
@@ -121,7 +121,7 @@
       <q-separator />
 
       <q-card-actions class="q-pa-md row items-center no-wrap">
-        <div class="col text-caption text-grey-6 ellipsis gt-xs" style="min-width: 0">
+        <div class="col text-caption app-text-muted ellipsis gt-xs" style="min-width: 0">
           Deslizá a la derecha para agregar y a la izquierda para quitar.
         </div>
 
