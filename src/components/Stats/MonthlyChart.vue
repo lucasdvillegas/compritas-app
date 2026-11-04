@@ -1,8 +1,14 @@
 <template>
   <q-card flat bordered class="fit">
     <q-card-section>
-      <div class="text-overline text-uppercase app-text-muted">Evolución mensual</div>
-      <div class="text-body2 app-text-muted q-mt-xs">Gastos por mes en {{ year }}</div>
+      <div class="row items-center q-gutter-x-sm no-wrap">
+        <q-avatar class="app-neutral-avatar" icon="bar_chart" size="34px" />
+
+        <div class="col" style="min-width: 0">
+          <div class="text-overline text-uppercase app-text-muted">Evolución mensual</div>
+          <div class="text-caption app-text-muted q-mt-xs">Gastos por mes en {{ year }}</div>
+        </div>
+      </div>
     </q-card-section>
 
     <q-card-section class="q-pt-none">

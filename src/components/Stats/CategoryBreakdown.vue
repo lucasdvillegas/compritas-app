@@ -1,9 +1,15 @@
 <template>
   <q-card flat bordered class="fit">
     <q-card-section>
-      <div class="text-overline text-uppercase app-text-muted">Gastos por categoría</div>
-      <div class="text-body2 app-text-muted q-mt-xs">
-        Solo se incluyen productos con precio cargado.
+      <div class="row items-center q-gutter-x-sm no-wrap">
+        <q-avatar class="app-neutral-avatar" icon="category" size="34px" />
+
+        <div class="col" style="min-width: 0">
+          <div class="text-overline text-uppercase app-text-muted">Gastos por categoría</div>
+          <div class="text-caption app-text-muted q-mt-xs">
+            Solo se incluyen productos con precio cargado.
+          </div>
+        </div>
       </div>
     </q-card-section>
 
@@ -14,7 +20,11 @@
       </div>
 
       <template v-else>
-        <div v-for="category in categories" :key="category.category_name" class="q-mb-md">
+        <div
+          v-for="category in categories"
+          :key="category.category_name"
+          class="app-surface-muted rounded-borders q-pa-sm q-mb-sm"
+        >
           <div class="row items-center justify-between q-gutter-x-sm no-wrap">
             <div class="ellipsis text-weight-medium app-text">{{ category.category_name }}</div>
             <div class="text-weight-bold text-no-wrap app-text">
