@@ -53,7 +53,7 @@
 
       <q-separator />
 
-      <q-card-section ref="listContainer" class="col q-pa-none" style="overflow-y: auto">
+      <div ref="listContainer" class="col q-pa-none product-picker-list" @scroll.passive="onScroll">
         <div v-if="loading && products.length === 0" class="row justify-center q-pa-xl">
           <q-spinner color="primary" size="32px" />
         </div>
@@ -124,7 +124,7 @@
         </div>
 
         <div ref="loadMoreSentinel" style="height: 1px" aria-hidden="true" />
-      </q-card-section>
+      </div>
 
       <q-separator />
 
@@ -204,19 +204,19 @@ function loadNextPage() {
 }
 
 function maybeLoadMore() {
-  const sentinel = loadMoreSentinel.value
-  const root = listContainer.value?.$el ?? listContainer.value
+  const el = listContainer.value
 
-  if (!sentinel || !root || !hasMore.value || loading.value || loadingMore.value) {
+  if (!el || !hasMore.value || loading.value || loadingMore.value) {
     return
   }
 
-  const rect = sentinel.getBoundingClientRect()
-  const rootRect = root.getBoundingClientRect()
-
-  if (rect.top <= rootRect.bottom) {
+  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 80) {
     loadNextPage()
   }
+}
+
+function onScroll() {
+  maybeLoadMore()
 }
 
 function loadPage(pageNumber) {
@@ -353,8 +353,8 @@ onMounted(() => {
       }
     },
     {
-      root: listContainer.value?.$el ?? listContainer.value,
-      rootMargin: '0px',
+      root: listContainer.value,
+      rootMargin: '80px',
     },
   )
 
@@ -369,6 +369,11 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.product-picker-list {
+  min-height: 0;
+  overflow-y: auto;
+}
+
 .status-slot {
   display: inline-block;
   width: 22px;
