@@ -72,7 +72,7 @@ import poster from '../assets/drum-major.jpg'
   width: 100%;
   margin-bottom: 46px;
   color: #171412;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--app-font-mono);
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.24em;
@@ -176,8 +176,8 @@ import poster from '../assets/drum-major.jpg'
 .auth-layout__visual-title {
   margin: 10px 0 0;
   color: #f4f1ea;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 40px;
+  font-family: var(--app-font-display);
+  font-size: clamp(2rem, 5vw, 2.5rem);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.08;
@@ -194,6 +194,7 @@ import poster from '../assets/drum-major.jpg'
 .auth-layout__visual-meta {
   margin-top: 22px;
   color: rgba(244, 241, 234, 0.45);
+  font-family: var(--app-font-mono);
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -208,6 +209,7 @@ import poster from '../assets/drum-major.jpg'
   align-items: center;
   gap: 8px;
   color: $primary;
+  font-family: var(--app-font-mono);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -224,7 +226,7 @@ import poster from '../assets/drum-major.jpg'
 :deep(.auth-form__title) {
   margin: 8px 0 0;
   color: #171412;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--app-font-display);
   font-size: 30px;
   font-weight: 600;
   letter-spacing: -0.01em;

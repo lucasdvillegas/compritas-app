@@ -46,7 +46,7 @@
             </div>
 
             <div class="row items-center q-gutter-sm q-mt-sm">
-              <div class="font-display text-h3 text-weight-bold app-text pin-display">
+              <div class="text-h3 text-weight-bold app-text pin-display">
                 {{ formattedPin }}
               </div>
               <q-btn
@@ -211,6 +211,10 @@ function confirmRegenerate() {
 
 <style scoped>
 .pin-display {
-  letter-spacing: 0.18em;
+  font-family: var(--app-font-mono);
+  font-size: clamp(1.5rem, 5vw, 2.1rem);
+  letter-spacing: 0.1em;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 </style>

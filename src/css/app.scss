@@ -20,6 +20,14 @@
   --app-success: #3f7d5c;
   --app-warning: #a8752a;
   --app-info: #55606a;
+  --app-font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --app-font-body: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+  --app-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --app-text-2xs: 0.6875rem;
+  --app-text-xs: 0.75rem;
+  --app-text-sm: 0.875rem;
+  --app-text-md: 1rem;
+  --app-text-lg: 1.125rem;
 }
 
 body.body--dark {
@@ -43,6 +51,86 @@ body.body--dark {
 body {
   background: var(--app-bg);
   color: var(--app-text);
+  font-family: var(--app-font-body);
+  font-size: var(--app-text-md);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Escala tipográfica global: títulos en Fraunces, texto en DM Sans
+// y etiquetas/datos en JetBrains Mono.
+.text-h1,
+.text-h2,
+.text-h3,
+.text-h4,
+.text-h5,
+.text-h6 {
+  font-family: var(--app-font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+}
+
+.text-h1 {
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  line-height: 1.08;
+}
+
+.text-h2 {
+  font-size: clamp(1.9rem, 5vw, 2.75rem);
+  line-height: 1.1;
+}
+
+.text-h3 {
+  font-size: clamp(1.6rem, 5vw, 2.25rem);
+  line-height: 1.15;
+}
+
+.text-h4 {
+  font-size: clamp(1.45rem, 4.2vw, 2.125rem);
+  line-height: 1.15;
+}
+
+.text-h5 {
+  font-size: clamp(1.2rem, 3vw, 1.55rem);
+  line-height: 1.2;
+}
+
+.text-h6 {
+  font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+  line-height: 1.25;
+}
+
+.text-subtitle1 {
+  font-size: var(--app-text-md);
+  font-weight: 500;
+}
+
+.text-subtitle2 {
+  font-size: var(--app-text-sm);
+  font-weight: 500;
+}
+
+.text-body1 {
+  font-size: var(--app-text-md);
+  line-height: 1.5;
+}
+
+.text-body2 {
+  font-size: var(--app-text-sm);
+  line-height: 1.55;
+}
+
+.text-caption {
+  font-size: var(--app-text-xs);
+  line-height: 1.45;
+}
+
+.text-overline {
+  font-family: var(--app-font-mono);
+  font-size: var(--app-text-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
 }
 
 // Layout y páginas comparten el mismo fondo, sin bordes ni sombras divisorias.
@@ -60,8 +148,13 @@ body {
 }
 
 .font-display {
-  font-family: Georgia, 'Times New Roman', serif;
-  letter-spacing: -0.01em;
+  font-family: var(--app-font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+.font-mono {
+  font-family: var(--app-font-mono);
 }
 
 .tracked {
