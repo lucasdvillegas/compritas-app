@@ -6,8 +6,10 @@ function summaryFrom(list) {
     id: list.id,
     name: list.name,
     status: list.status,
+    role: list.role ?? null,
     items_count: list.items_count ?? 0,
     checked_items_count: list.checked_items_count ?? 0,
+    members_count: list.members_count ?? null,
     completed_at: list.completed_at ?? null,
     total_amount: list.total_amount ?? null,
     manual_total: list.manual_total ?? null,
@@ -54,6 +56,7 @@ export const useListsStore = defineStore('lists', {
         (item) => item.line_total === null || item.line_total === undefined,
       ).length ?? 0,
     activeIsCompleted: (state) => state.activeList?.status === 'completed',
+    activeIsOwner: (state) => state.activeList?.role === 'owner',
   },
 
   actions: {
@@ -203,6 +206,31 @@ export const useListsStore = defineStore('lists', {
         })
     },
 
+    leaveList(id) {
+      this.savingList = true
+
+      return listsServices
+        .leaveList(id)
+        .then(() => {
+          this.lists = this.lists.filter((list) => list.id !== id)
+
+          if (this.activeList?.id !== id) {
+            return
+          }
+
+          this.activeList = null
+
+          if (this.lists.length === 0) {
+            return
+          }
+
+          return this.selectList(this.lists[0].id)
+        })
+        .finally(() => {
+          this.savingList = false
+        })
+    },
+
     addItem(productId, { quantity = 1, checked = false } = {}) {
       const list = this.requireActiveList()
 
@@ -261,6 +289,7 @@ export const useListsStore = defineStore('lists', {
 
       if (this.activeList?.id === list.id) {
         this.activeList.name = list.name
+        this.activeList.role = list.role ?? this.activeList.role
         this.activeList.manual_total = list.manual_total ?? null
         this.syncCounts()
       }

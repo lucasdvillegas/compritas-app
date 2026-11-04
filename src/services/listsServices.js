@@ -40,4 +40,28 @@ export const listsServices = {
   removeItem(listId, itemId) {
     return api.delete(`/lists/${listId}/items/${itemId}`)
   },
+
+  getMembers(listId) {
+    return api.get(`/lists/${listId}/members`)
+  },
+
+  inviteByPin(listId, pin) {
+    return api.post(`/lists/${listId}/invitations`, { pin })
+  },
+
+  getInvitations(listId) {
+    return api.get(`/lists/${listId}/invitations`)
+  },
+
+  revokeInvitation(listId, invitationId) {
+    return api.delete(`/lists/${listId}/invitations/${invitationId}`)
+  },
+
+  removeMember(listId, userId) {
+    return api.delete(`/lists/${listId}/members/${userId}`)
+  },
+
+  leaveList(listId) {
+    return api.delete(`/lists/${listId}/members/me`)
+  },
 }

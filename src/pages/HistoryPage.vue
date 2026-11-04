@@ -66,6 +66,7 @@
             <q-item-section side>
               <div class="row items-center no-wrap q-gutter-x-xs">
                 <q-btn
+                  v-if="list.role === 'owner'"
                   flat
                   dense
                   round

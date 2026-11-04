@@ -25,6 +25,16 @@ const routes = [
         name: 'stats',
         component: () => import('@/pages/StatsPage.vue'),
       },
+      {
+        path: 'notifications',
+        name: 'notifications',
+        component: () => import('@/pages/NotificationsPage.vue'),
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/pages/ProfilePage.vue'),
+      },
     ],
   },
 

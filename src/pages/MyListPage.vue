@@ -114,6 +114,10 @@
                   Deslizá a la derecha para marcar y a la izquierda para desmarcar.
                 </div>
 
+                <div v-if="activeList?.members_count > 0" class="text-caption text-grey-6 q-mt-xs">
+                  {{ pluralize(activeList.members_count, 'miembro', 'miembros') }}
+                </div>
+
                 <div
                   v-if="activeItems.length > 0 || activeManualTotal !== null"
                   class="row items-center q-gutter-x-sm q-mt-sm"
@@ -163,7 +167,12 @@
               <q-btn flat dense round icon="more_vert" aria-label="Acciones de la lista">
                 <q-menu auto-close>
                   <q-list style="min-width: 220px">
-                    <q-item v-close-popup clickable @click="openRenameDialog">
+                    <q-item
+                      v-if="activeIsOwner"
+                      v-close-popup
+                      clickable
+                      @click="openRenameDialog"
+                    >
                       <q-item-section avatar>
                         <q-icon name="edit" />
                       </q-item-section>
@@ -177,7 +186,26 @@
                       <q-item-section>Completar lista</q-item-section>
                     </q-item>
 
-                    <q-item v-close-popup clickable class="text-negative" @click="confirmDelete">
+                    <q-item
+                      v-if="!activeIsOwner"
+                      v-close-popup
+                      clickable
+                      class="text-negative"
+                      @click="confirmLeave"
+                    >
+                      <q-item-section avatar>
+                        <q-icon name="logout" />
+                      </q-item-section>
+                      <q-item-section>Salir de la lista</q-item-section>
+                    </q-item>
+
+                    <q-item
+                      v-if="activeIsOwner"
+                      v-close-popup
+                      clickable
+                      class="text-negative"
+                      @click="confirmDelete"
+                    >
                       <q-item-section avatar>
                         <q-icon name="delete_outline" />
                       </q-item-section>
@@ -197,7 +225,18 @@
               class="q-mt-md"
             />
 
-            <div class="row justify-end q-mt-md">
+            <div class="row justify-end q-gutter-sm q-mt-md">
+              <q-btn
+                v-if="activeIsOwner"
+                outline
+                color="primary"
+                icon="group_add"
+                label="Compartir"
+                no-caps
+                :disable="loadingList"
+                @click="openShareDialog"
+              />
+
               <q-btn
                 color="primary"
                 icon="add"
@@ -286,6 +325,7 @@ import ItemPriceDialog from '@/components/Lists/ItemPriceDialog.vue'
 import ItemQuantityDialog from '@/components/Lists/ItemQuantityDialog.vue'
 import ListTotalDialog from '@/components/Lists/ListTotalDialog.vue'
 import ProductPickerDialog from '@/components/Lists/ProductPickerDialog.vue'
+import ShareListDialog from '@/components/Lists/ShareListDialog.vue'
 
 const $q = useQuasar()
 const listsStore = useListsStore()
@@ -297,6 +337,7 @@ const {
   activeTotal,
   activeManualTotal,
   activeUnpricedCount,
+  activeIsOwner,
   loading,
   loadingList,
   savingList,
@@ -348,7 +389,7 @@ function openCreateDialog() {
 }
 
 function openRenameDialog() {
-  if (!activeList.value) {
+  if (!activeList.value || !activeIsOwner.value) {
     return
   }
 
@@ -405,7 +446,7 @@ function confirmComplete() {
 function confirmDelete() {
   const list = activeList.value
 
-  if (!list) {
+  if (!list || !activeIsOwner.value) {
     return
   }
 
@@ -450,6 +491,57 @@ function openProductPicker() {
   $q.dialog({
     component: ProductPickerDialog,
     componentProps: { list: activeList.value },
+  })
+}
+
+function openShareDialog() {
+  if (!activeList.value || !activeIsOwner.value) {
+    return
+  }
+
+  $q.dialog({
+    component: ShareListDialog,
+    componentProps: { list: activeList.value },
+  })
+}
+
+function confirmLeave() {
+  const list = activeList.value
+
+  if (!list || activeIsOwner.value) {
+    return
+  }
+
+  $q.dialog({
+    title: 'Salir de la lista',
+    message: `¿Querés dejar de participar en "${list.name}"? La lista sigue existiendo para el resto de los miembros.`,
+    cancel: { label: 'Cancelar', flat: true, noCaps: true },
+    ok: {
+      label: 'Salir',
+      color: 'negative',
+      unelevated: true,
+      noCaps: true,
+    },
+    persistent: true,
+  }).onOk(() => {
+    listsStore
+      .leaveList(list.id)
+      .then(() => {
+        $q.notify({
+          type: 'positive',
+          message: 'Saliste de la lista.',
+          position: 'top',
+        })
+      })
+      .catch((error) => {
+        if (error.response?.data?.message) {
+          $q.notify({
+            type: 'negative',
+            message: error.response.data.message,
+            position: 'top',
+          })
+        }
+      })
   })
 }
 
