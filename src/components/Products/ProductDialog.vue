@@ -132,7 +132,6 @@ categoriesServices
       $q.notify({
         type: 'negative',
         message: error.response.data.message,
-        position: 'top',
       })
     }
   })
@@ -159,7 +158,6 @@ function submitForm() {
       $q.notify({
         type: 'positive',
         message: data.message,
-        position: 'top',
       })
 
       onDialogOK(data.data)
@@ -182,7 +180,6 @@ function submitForm() {
         $q.notify({
           type: 'negative',
           message: error.response.data.message,
-          position: 'top',
         })
       }
     })

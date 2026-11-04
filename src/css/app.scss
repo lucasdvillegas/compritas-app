@@ -16,6 +16,9 @@
   --app-radius-lg: 18px;
   --app-radius-sm: 12px;
   --app-primary-card: #a52835;
+  --app-success: #3f7d5c;
+  --app-warning: #a8752a;
+  --app-info: #55606a;
 }
 
 body.body--dark {
@@ -30,6 +33,9 @@ body.body--dark {
   --app-chip-bg: #2a2a2a;
   --app-chip-text: #e8eaed;
   --app-primary-card: #8f2230;
+  --app-success: #74b894;
+  --app-warning: #d3a15c;
+  --app-info: #9aa6b1;
 }
 
 body {
@@ -236,4 +242,68 @@ body.body--dark .q-separator {
 
 body.body--dark .q-table {
   color: var(--app-text);
+}
+
+// Notificaciones: mismo lenguaje que las tarjetas, con acento por tipo.
+.q-notification {
+  background: var(--app-surface) !important;
+  color: var(--app-text) !important;
+  border: 1px solid var(--app-border) !important;
+  border-left: 4px solid var(--app-border) !important;
+  border-radius: var(--app-radius-sm) !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+.q-notification.bg-positive {
+  border-left-color: var(--app-success) !important;
+}
+
+.q-notification.bg-negative {
+  border-left-color: var(--q-primary) !important;
+}
+
+.q-notification.bg-warning {
+  border-left-color: var(--app-warning) !important;
+}
+
+.q-notification.bg-info {
+  border-left-color: var(--app-info) !important;
+}
+
+.q-notification__message {
+  color: var(--app-text) !important;
+}
+
+.q-notification__caption {
+  color: var(--app-text-muted) !important;
+}
+
+.q-notification .q-notification__avatar .q-icon,
+.q-notification .q-notification__icon {
+  color: inherit;
+}
+
+.q-notification.bg-positive .q-notification__avatar .q-icon,
+.q-notification.bg-positive .q-notification__icon {
+  color: var(--app-success) !important;
+}
+
+.q-notification.bg-negative .q-notification__avatar .q-icon,
+.q-notification.bg-negative .q-notification__icon {
+  color: var(--q-primary) !important;
+}
+
+.q-notification.bg-warning .q-notification__avatar .q-icon,
+.q-notification.bg-warning .q-notification__icon {
+  color: var(--app-warning) !important;
+}
+
+.q-notification.bg-info .q-notification__avatar .q-icon,
+.q-notification.bg-info .q-notification__icon {
+  color: var(--app-info) !important;
+}
+
+.q-notification .q-btn {
+  color: var(--app-text-muted) !important;
 }

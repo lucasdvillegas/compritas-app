@@ -212,7 +212,6 @@ function notifyError(error) {
     $q.notify({
       type: 'negative',
       message: error.response.data.message,
-      position: 'top',
     })
   }
 }
@@ -247,7 +246,6 @@ function confirmDelete(category, reset) {
         $q.notify({
           type: 'positive',
           message: data.message,
-          position: 'top',
         })
       })
       .catch(notifyError)

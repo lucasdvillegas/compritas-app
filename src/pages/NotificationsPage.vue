@@ -155,7 +155,6 @@ function notifyError(error) {
     $q.notify({
       type: 'negative',
       message: error.response.data.message,
-      position: 'top',
     })
   }
 }
@@ -185,7 +184,6 @@ function markAllAsRead() {
       $q.notify({
         type: 'positive',
         message: 'Notificaciones marcadas como leídas.',
-        position: 'top',
       })
 
       if (filter.value === 'unread') {
@@ -204,7 +202,6 @@ function accept(notification) {
       $q.notify({
         type: 'positive',
         message: `Te uniste a "${result.list_name}".`,
-        position: 'top',
       })
 
       listsStore.fetchOpenLists().catch(() => {})
@@ -225,7 +222,6 @@ function decline(notification) {
       $q.notify({
         type: 'info',
         message: 'Invitación rechazada.',
-        position: 'top',
       })
 
       loadNotifications()

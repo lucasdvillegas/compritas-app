@@ -90,7 +90,6 @@ function submitForm() {
         message: isEditing.value
           ? 'Lista actualizada correctamente.'
           : 'Lista creada correctamente.',
-        position: 'top',
       })
 
       onDialogOK(savedList)
@@ -102,7 +101,6 @@ function submitForm() {
         $q.notify({
           type: 'negative',
           message: error.response.data.message,
-          position: 'top',
         })
       }
     })

@@ -109,7 +109,6 @@ function fetchHistory() {
         $q.notify({
           type: 'negative',
           message: error.response.data.message,
-          position: 'top',
         })
       }
     })
@@ -146,7 +145,6 @@ function confirmDelete(list) {
         $q.notify({
           type: 'positive',
           message: 'Lista eliminada correctamente.',
-          position: 'top',
         })
       })
       .catch((error) => {
@@ -154,7 +152,6 @@ function confirmDelete(list) {
           $q.notify({
             type: 'negative',
             message: error.response.data.message,
-            position: 'top',
           })
         }
       })

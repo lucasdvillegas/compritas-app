@@ -125,7 +125,6 @@ const onSubmit = handleSubmit((values) => {
       $q.notify({
         type: 'positive',
         message,
-        position: 'top',
       })
 
       return router.push(redirectTarget())
@@ -135,7 +134,6 @@ const onSubmit = handleSubmit((values) => {
         $q.notify({
           type: 'negative',
           message: error.response.data.message,
-          position: 'top',
         })
       }
     })

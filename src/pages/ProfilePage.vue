@@ -110,7 +110,6 @@ function notifyError(error) {
     $q.notify({
       type: 'negative',
       message: error.response.data.message,
-      position: 'top',
     })
   }
 }
@@ -124,7 +123,6 @@ function copyPin() {
     $q.notify({
       type: 'positive',
       message: 'PIN copiado.',
-      position: 'top',
     })
   })
 }
@@ -148,7 +146,6 @@ function confirmRegenerate() {
         $q.notify({
           type: 'positive',
           message: 'PIN regenerado correctamente.',
-          position: 'top',
         })
       })
       .catch(notifyError)

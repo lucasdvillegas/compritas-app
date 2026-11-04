@@ -339,7 +339,6 @@ function loadLists() {
       $q.notify({
         type: 'negative',
         message: error.response.data.message,
-        position: 'top',
       })
     }
   })
@@ -355,7 +354,6 @@ function selectList(list) {
       $q.notify({
         type: 'negative',
         message: error.response.data.message,
-        position: 'top',
       })
     }
   })
@@ -411,7 +409,6 @@ function confirmComplete() {
         $q.notify({
           type: 'positive',
           message: 'Lista completada. Ya podés consultarla en el historial.',
-          position: 'top',
         })
       })
       .catch((error) => {
@@ -419,7 +416,6 @@ function confirmComplete() {
           $q.notify({
             type: 'negative',
             message: error.response.data.message,
-            position: 'top',
           })
         }
       })
@@ -451,7 +447,6 @@ function confirmDelete() {
         $q.notify({
           type: 'positive',
           message: 'Lista eliminada correctamente.',
-          position: 'top',
         })
       })
       .catch((error) => {
@@ -459,7 +454,6 @@ function confirmDelete() {
           $q.notify({
             type: 'negative',
             message: error.response.data.message,
-            position: 'top',
           })
         }
       })
@@ -513,7 +507,6 @@ function confirmLeave() {
         $q.notify({
           type: 'positive',
           message: 'Saliste de la lista.',
-          position: 'top',
         })
       })
       .catch((error) => {
@@ -521,7 +514,6 @@ function confirmLeave() {
           $q.notify({
             type: 'negative',
             message: error.response.data.message,
-            position: 'top',
           })
         }
       })
@@ -534,7 +526,6 @@ function toggleItem(item, checked) {
       $q.notify({
         type: 'negative',
         message: error.response.data.message,
-        position: 'top',
       })
     }
   })
@@ -570,7 +561,6 @@ function changeQuantity(item, quantity) {
       $q.notify({
         type: 'negative',
         message: error.response.data.message,
-        position: 'top',
       })
     }
   })
@@ -594,7 +584,6 @@ function openPriceDialog(item) {
         $q.notify({
           type: 'negative',
           message: error.response.data.message,
-          position: 'top',
         })
       }
     })
@@ -615,7 +604,6 @@ function openQuantityDialog(item) {
         $q.notify({
           type: 'negative',
           message: error.response.data.message,
-          position: 'top',
         })
       }
     })
@@ -647,7 +635,6 @@ function openTotalDialog() {
         $q.notify({
           type: 'positive',
           message: nextTotal === null ? 'Total manual quitado.' : 'Total de la lista actualizado.',
-          position: 'top',
         })
       })
       .catch((error) => {
@@ -655,7 +642,6 @@ function openTotalDialog() {
           $q.notify({
             type: 'negative',
             message: error.response.data.message,
-            position: 'top',
           })
         }
       })
@@ -680,7 +666,6 @@ function confirmRemoveItem(item) {
         $q.notify({
           type: 'negative',
           message: error.response.data.message,
-          position: 'top',
         })
       }
     })

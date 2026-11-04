@@ -266,7 +266,6 @@ function notifyError(error) {
     $q.notify({
       type: 'negative',
       message: error.response.data.message,
-      position: 'top',
     })
   }
 }
@@ -297,21 +296,11 @@ function toggleProduct(product, shouldBeInList) {
     : listsStore.removeItem(item.id)
 
   request
-    .then(() => {
-      $q.notify({
-        type: 'positive',
-        message: shouldBeInList
-          ? `${product.name} agregado a la lista.`
-          : `${product.name} quitado de la lista.`,
-        position: 'top',
-      })
-    })
     .catch((error) => {
       if (error.response?.data?.message) {
         $q.notify({
           type: 'negative',
           message: error.response.data.message,
-          position: 'top',
         })
       }
     })

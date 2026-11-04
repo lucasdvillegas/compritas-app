@@ -170,7 +170,6 @@ function notifyError(error) {
     $q.notify({
       type: 'negative',
       message: error.response.data.message,
-      position: 'top',
     })
   }
 }
@@ -215,7 +214,6 @@ function submitInvitation() {
       $q.notify({
         type: 'positive',
         message: data.message,
-        position: 'top',
       })
 
       pin.value = ''
@@ -259,7 +257,6 @@ function confirmRemove(member) {
         $q.notify({
           type: 'positive',
           message: 'Miembro quitado correctamente.',
-          position: 'top',
         })
       })
       .catch(notifyError)
@@ -287,7 +284,6 @@ function confirmRevoke(invitation) {
         $q.notify({
           type: 'positive',
           message: 'Invitación revocada correctamente.',
-          position: 'top',
         })
       })
       .catch(notifyError)

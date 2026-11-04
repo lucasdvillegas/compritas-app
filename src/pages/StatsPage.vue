@@ -148,7 +148,6 @@ function loadStats() {
         $q.notify({
           type: 'negative',
           message: error.response.data.message,
-          position: 'top',
         })
       }
     })

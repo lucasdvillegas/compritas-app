@@ -85,7 +85,6 @@ function submitForm() {
       $q.notify({
         type: 'positive',
         message: data.message,
-        position: 'top',
       })
 
       onDialogOK(data.data)
