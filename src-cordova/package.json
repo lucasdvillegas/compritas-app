@@ -1,0 +1,23 @@
+{
+  "name": "com.compritapp.app",
+  "displayName": "Compritapp",
+  "version": "1.0.0",
+  "description": "Listas de compras compartidas, precios por kilo o unidad y estadísticas de gastos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Lucas Villegas",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-android": "^15.1.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ]
+  }
+}

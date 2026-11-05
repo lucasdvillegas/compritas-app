@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget android-versionCode="10000" id="com.compritapp.app" ios-CFBundleVersion="1" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Compritapp</name>
+    <description>Listas de compras compartidas, precios por kilo o unidad y estadísticas de gastos.</description>
+    <author email="lucasdvillegas@hotmail.com" href="https://github.com/lucasdvillegas">
+        Lucas Villegas
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="Orientation" value="portrait" />
+    <platform name="android">
+        <preference name="android-minSdkVersion" value="24" />
+        <icon background="res/android/ldpi-background.png" density="ldpi" foreground="res/android/ldpi-foreground.png" monochrome="res/android/ldpi-monochrome.png" src="res/android/ldpi.png" />
+        <icon background="res/android/mdpi-background.png" density="mdpi" foreground="res/android/mdpi-foreground.png" monochrome="res/android/mdpi-monochrome.png" src="res/android/mdpi.png" />
+        <icon background="res/android/hdpi-background.png" density="hdpi" foreground="res/android/hdpi-foreground.png" monochrome="res/android/hdpi-monochrome.png" src="res/android/hdpi.png" />
+        <icon background="res/android/xhdpi-background.png" density="xhdpi" foreground="res/android/xhdpi-foreground.png" monochrome="res/android/xhdpi-monochrome.png" src="res/android/xhdpi.png" />
+        <icon background="res/android/xxhdpi-background.png" density="xxhdpi" foreground="res/android/xxhdpi-foreground.png" monochrome="res/android/xxhdpi-monochrome.png" src="res/android/xxhdpi.png" />
+        <icon background="res/android/xxxhdpi-background.png" density="xxxhdpi" foreground="res/android/xxxhdpi-foreground.png" monochrome="res/android/xxxhdpi-monochrome.png" src="res/android/xxxhdpi.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/splashscreen.png" />
+        <preference name="AndroidWindowSplashScreenBackground" value="#a52835" />
+    </platform>
+    <platform name="ios">
+        <preference name="deployment-target" value="13.0" />
+        <icon src="res/ios/icon.png" />
+        <icon foreground="true" src="res/ios/icon-dark.png" />
+        <icon monochrome="true" src="res/ios/icon-tinted.png" />
+        <splash src="res/screen/ios/Default@2x~universal~anyany.png" />
+        <splash src="res/screen/ios/Default@2x~universal~comany.png" />
+        <splash src="res/screen/ios/Default@2x~universal~comcom.png" />
+        <splash src="res/screen/ios/Default@3x~universal~anyany.png" />
+        <splash src="res/screen/ios/Default@3x~universal~anycom.png" />
+        <splash src="res/screen/ios/Default@3x~universal~comany.png" />
+        <splash src="res/screen/ios/Default@2x~universal~anyany~dark.png" />
+        <splash src="res/screen/ios/Default@2x~universal~comany~dark.png" />
+        <splash src="res/screen/ios/Default@2x~universal~comcom~dark.png" />
+        <splash src="res/screen/ios/Default@3x~universal~anyany~dark.png" />
+        <splash src="res/screen/ios/Default@3x~universal~anycom~dark.png" />
+        <splash src="res/screen/ios/Default@3x~universal~comany~dark.png" />
+    </platform>
+    <allow-navigation href="about:*" />
+</widget>

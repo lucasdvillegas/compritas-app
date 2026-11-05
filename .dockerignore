@@ -1,0 +1,14 @@
+.git
+.github
+.vscode
+.quasar
+dist
+dist-mobile
+node_modules
+npm-debug.log*
+.env
+.env.*
+src-cordova/node_modules
+src-cordova/platforms
+src-cordova/plugins
+src-cordova/www

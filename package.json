@@ -1,7 +1,7 @@
 {
   "name": "compritas-app",
-  "version": "0.0.1",
-  "description": "A Quasar Project",
+  "version": "1.0.0",
+  "description": "Listas de compras compartidas, precios por kilo o unidad y estadísticas de gastos.",
   "productName": "Compritapp",
   "author": "lucasdvillegas <lucasdvillegas@hotmail.com>",
   "type": "module",
