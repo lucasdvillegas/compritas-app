@@ -6,6 +6,7 @@
           flat
           dense
           round
+          size="lg"
           icon="menu"
           color="primary"
           aria-label="Abrir menú"
@@ -19,6 +20,7 @@
             flat
             dense
             round
+            size="lg"
             icon="notifications"
             color="primary"
             aria-label="Notificaciones"
